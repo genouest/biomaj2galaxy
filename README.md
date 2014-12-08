@@ -73,6 +73,20 @@ Known problems
 ==============
 
     * There is currently no way to delete a folder contained inside a data library from the API. The workaround is to delete the whole data library, or individual datasets.
-    * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22 for more info)
     * Twobit support is still incomplete
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
+    * Visualizations do not see the dbkeys
+    
+    
+    * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22 for more info)
+    Until the wrappers are updated, you can manually modify the file ncbi_blast_plus/tools/ncbi_blast_plus/ncbi_macros.xml and replace the blocks that look like this:
+    
+        <options from_file="blastdb.loc">
+            <column name="value" index="0"/>
+            <column name="name" index="1"/>
+            <column name="path" index="2"/>
+        </options>
+
+    by this:
+    
+        <options from_data_table="blastdb" />
