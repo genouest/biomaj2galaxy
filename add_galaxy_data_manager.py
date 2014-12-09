@@ -96,9 +96,6 @@ def check_args(args):
     
     return args
 
-
-# TODO handle twobit indexes
-
 def check_path(f):
     if not os.path.isfile(f):
         print >> sys.stderr, "ERROR: File '"+f+"' could not be read!"
@@ -319,4 +316,13 @@ if __name__ == '__main__':
             params['index_name'] = bowtie2_names[bowtie2]
             params['index_path'] = bowtie2
             fetch_res = gi.tools.run_tool( None, ADD_BOWTIE2_TOOL_ID, params )
+            wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)
+
+    # Add 2bit indexes
+    if args.twobit:
+        for twobit in args.twobit:
+            params = {}
+            params['dbkey'] = args.dbkey
+            params['index_path'] = twobit
+            fetch_res = gi.tools.run_tool( None, ADD_2BIT_TOOL_ID, params )
             wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)

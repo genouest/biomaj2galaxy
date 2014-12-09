@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     parser.add_argument( '--delete-len', help='Remove from disk the len file referenced in the __dbkeys__ data table', action="store_true")
     
-    # TODO support other tables: tophat, tophat2, fasta_indexes, twobit
+    # TODO support other tables: tophat, tophat2, fasta_indexes
     
     args = parser.parse_args()
     
@@ -147,3 +147,12 @@ if __name__ == '__main__':
                 remove_table_entry(gi, table, entry)
                 if args.delete or args.delete_links:
                     remove_files(entry[3], args.delete_links, ['.amb', '.ann', '.bwt', '.pac', '.sa'])
+
+    if args.twobit:
+        table = 'twobit'
+        table_entries = get_table_entries(gi, table, args.dbkey)
+        if table_entries:
+            for entry in table_entries:
+                remove_table_entry(gi, table, entry)
+                if args.delete or args.delete_links:
+                    remove_files(entry[1], args.delete_links)
