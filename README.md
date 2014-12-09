@@ -72,7 +72,7 @@ Usage
 
 To see how to use each script (not necessarily from BioMAJ), just launch it with --help option.
 
-Here is an example post-process and remove process configuration for BioMAJ:
+Here is an example post-process and remove process configuration for BioMAJ, using data manager:
 
     B1.db.post.process=GALAXY
     GALAXY=galaxy_dm
@@ -91,6 +91,26 @@ Here is an example post-process and remove process configuration for BioMAJ:
     rm_galaxy_dm.type=galaxy
     rm_galaxy_dm.exe=remove_galaxy_data_manager.py
     rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -f --blastn --bowtie2 --delete
+
+And the same using data libraries:
+
+    B2.db.post.process=GALAXY
+    GALAXY=galaxy_dl
+
+    galaxy_dl.name=galaxy_dl
+    galaxy_dl.desc=Add files to Galaxy data libraries
+    galaxy_dl.type=galaxy
+    galaxy_dl.exe=add_galaxy_library.py
+    galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" --lib-desc "Genome of Homo sapiens (version ${remote.release}) downloaded from NCBI" ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa
+
+    db.remove.process=RM_GALAXY
+    RM_GALAXY=rm_galaxy_dl
+
+    rm_galaxy_dl.name=rm_galaxy_dl
+    rm_galaxy_dl.desc=Remove from Galaxy data libraries
+    rm_galaxy_dl.type=galaxy
+    rm_galaxy_dl.exe=remove_galaxy_library.py
+    rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})"
 
 TODO
 ====
