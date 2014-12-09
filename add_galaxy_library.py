@@ -135,7 +135,7 @@ if __name__ == '__main__':
     parser.add_argument("-u", "--url", help="Url of the galaxy instance", default='http://localhost:8080', required=True)
     parser.add_argument("-k", "--api-key", help="Galaxy API key", required=True)
     parser.add_argument("-l", "--library", help="Data library where the data will be placed", required=True)
-    parser.add_argument("-f", "--folder", help="Data library folder where the data will be placed (default=/)")
+    parser.add_argument("-f", "--folder", help="Data library folder where the data will be placed (default=/)", default='/')
     parser.add_argument("-r", "--roles", help="Restrict acces to given group(s) (comma separated list). WARNING: the permission of the whole library is modified when using this option.")
     parser.add_argument("--lib-desc", help="Library description (only used if the library does not already exist)")
     parser.add_argument("--lib-synopsis", help="Library synopsis (only used if the library does not already exist)")
@@ -162,7 +162,9 @@ if __name__ == '__main__':
         r_roles = get_roles(gi, roles)
 
     print("Adding to data library '"+str(args.library)+"'")
-
+    
+    if not args.folder:
+        args.folder = '/'
     dest = os.path.normpath(args.folder)
     dest = dest.split(os.sep)
     dest = [x for x in dest if x] # Remove empty string when sep at the begin or end, or multiple sep
