@@ -110,7 +110,7 @@ if __name__ == '__main__':
             for entry in table_entries:
                 remove_table_entry(gi, table, entry)
                 if args.delete or args.delete_links:
-                    remove_files(entry[2], args.delete_links, ['nal', 'nhr', 'nin', 'nnd', 'nni', 'nsd', 'nsi', 'nsq']) # FIXME handle multi volume databanks
+                    remove_files(entry[2], args.delete_links, ['.nal', '.nhr', '.nin', '.nnd', '.nni', '.nsd', '.nsi', '.nsq']) # FIXME handle multi volume databanks
 
     if args.blastp:        
         table = 'blastdb_p'
@@ -119,7 +119,7 @@ if __name__ == '__main__':
             for entry in table_entries:
                 remove_table_entry(gi, table, entry)
                 if args.delete or args.delete_links:
-                    remove_files(entry[2], args.delete_links, ['pal', 'phr', 'pin', 'pnd', 'pni', 'psd', 'psi', 'psq']) # FIXME handle multi volume databanks
+                    remove_files(entry[2], args.delete_links, ['.pal', '.phr', '.pin', '.pnd', '.pni', '.psd', '.psi', '.psq']) # FIXME handle multi volume databanks
 
     if args.bowtie:        
         table = 'bowtie_indexes'
