@@ -80,19 +80,40 @@ def check_args(args):
         if args.genome_fasta:
             args.genome_fasta = check_path(args.genome_fasta)
         if args.fasta:
-            args.fasta = check_path(args.fasta)
+            checked = []
+            for f in args.fasta:
+                checked += [check_path(f),]
+            args.fasta = checked
         if args.blastn:
-            args.blastn = check_path(args.blastn+".nin")[:-4]
+            checked = []
+            for f in args.blastn:
+                checked += [check_path(f+".nin")[:-4],]
+            args.blastn = checked
         if args.blastp:
-            args.blastp = check_path(args.blastp+".pin")[:-4]
+            checked = []
+            for f in args.blastp:
+                checked += [check_path(f+".pin")[:-4],]
+            args.blastp = checked
         if args.bowtie:
-            args.bowtie = check_path(args.bowtie+".1.ebwt")[:-7]
+            checked = []
+            for f in args.bowtie:
+                checked += [check_path(f+".1.ebwt")[:-7],]
+            args.bowtie = checked
         if args.bowtie2:
-            args.bowtie2 = check_path(args.bowtie2+".1.bt2")[:-6]
+            checked = []
+            for f in args.bowtie2:
+                checked += [check_path(f+".1.bt2")[:-6],]
+            args.bowtie2 = checked
         if args.bwa:
-            args.bwa = check_path(args.bwa+".amb")[:-4]
+            checked = []
+            for f in args.bwa:
+                checked += [check_path(f+".amb")[:-4],]
+            args.bwa = checked
         if args.twobit:
-            args.twobit = check_path(args.twobit)
+            checked = []
+            for f in args.twobit:
+                checked += [check_path(f),]
+            args.twobit = checked
     
     return args
 
@@ -187,7 +208,7 @@ if __name__ == '__main__':
     # Prepare a default display name that will be used if not specified in given args
     default_name = args.dbkey_display_name
     if not default_name and dbkey_entry:
-        print "trying to use dbkey_entry name: "+dbkey_entry[1]
+        print "Trying to use dbkey_entry name: "+dbkey_entry[1]
         default_name = dbkey_entry[1]
     if not default_name:
         default_name = args.dbkey
@@ -240,6 +261,7 @@ if __name__ == '__main__':
     # Add the not-ref genomes or other fasta files (no .len will be computed)
     if args.fasta:
         for fasta in args.fasta:
+            print "Adding a new fasta file '"+fasta+"'"
             params = {}
             params['dbkey_source|dbkey_source_selector'] = 'existing'
             params['dbkey_source|dbkey'] = args.dbkey
@@ -261,6 +283,7 @@ if __name__ == '__main__':
     # Add blastn and blastp databanks
     if args.blastn:
         for blastn in args.blastn:
+            print "Adding a new blastdb index '"+blastn+"'"
             params = {}
             if args.dbkey:
                 params['blastdb_id'] = args.dbkey
@@ -274,6 +297,7 @@ if __name__ == '__main__':
     
     if args.blastp:
         for blastp in args.blastp:
+            print "Adding a new blastdb_p index '"+blastp+"'"
             params = {}
             if args.dbkey:
                 params['blastdb_id'] = args.dbkey
@@ -288,6 +312,7 @@ if __name__ == '__main__':
     # Add BWA indexes
     if args.bwa:
         for bwa in args.bwa:
+            print "Adding a new bwa index '"+bwa+"'"
             params = {}
             params['dbkey'] = args.dbkey
             params['index_id'] = '' # Let it be generated
@@ -299,6 +324,7 @@ if __name__ == '__main__':
     # Add Bowtie indexes
     if args.bowtie:
         for bowtie in args.bowtie:
+            print "Adding a new bowtie index '"+bowtie+"'"
             params = {}
             params['dbkey'] = args.dbkey
             params['index_id'] = '' # Let it be generated
@@ -310,6 +336,7 @@ if __name__ == '__main__':
     # Add Bowtie2 indexes
     if args.bowtie2:
         for bowtie2 in args.bowtie2:
+            print "Adding a new bowtie2 index '"+bowtie2+"'"
             params = {}
             params['dbkey'] = args.dbkey
             params['index_id'] = '' # Let it be generated
@@ -321,6 +348,7 @@ if __name__ == '__main__':
     # Add 2bit indexes
     if args.twobit:
         for twobit in args.twobit:
+            print "Adding a new twobit index '"+twobit+"'"
             params = {}
             params['dbkey'] = args.dbkey
             params['index_path'] = twobit
