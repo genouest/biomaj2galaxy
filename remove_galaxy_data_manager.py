@@ -74,10 +74,10 @@ if __name__ == '__main__':
     parser.add_argument( '--twobit', help='Remove given dbkey from the list of pregenerated 2bit index (UCSC)', action="store_true")
     
     group = parser.add_mutually_exclusive_group(required=False)
-    group.add_argument( '--delete', help='Remove from disk the files referenced in the data tables (except len files from __dbkeys__)', action="store_true")
-    group.add_argument( '--delete-links', help='Remove from disk the files referenced in the data tables, only if they are symlinks (except len files from __dbkeys__)', action="store_true")
+    group.add_argument( '--delete', help='Remove from disk the files referenced in the data tables (except len files from __dbkeys__). Works only if the files are available on the machine running this script.', action="store_true")
+    group.add_argument( '--delete-links', help='Remove from disk the files referenced in the data tables, only if they are symlinks (except len files from __dbkeys__). Works only if the files are available on the machine running this script.', action="store_true")
 
-    parser.add_argument( '--delete-len', help='Remove from disk the len file referenced in the __dbkeys__ data table', action="store_true")
+    parser.add_argument( '--delete-len', help='Remove from disk the len file referenced in the __dbkeys__ data table. Works only if the files are available on the machine running this script.', action="store_true")
     
     # TODO support other tables: tophat, tophat2, fasta_indexes
     

@@ -62,23 +62,50 @@ You need an API key to access your galaxy server. You need to use one from an ad
 allow_library_path_paste should be set in universe_wsgi.ini
 
 There is a opened pull request concerning the removal of items from the data tables. You will need to apply the patch available here: https://bitbucket.org/galaxy/galaxy-central/pull-request/577/add-an-api-to-remove-items-from-tool-data/diff
-Hopefully this patch will be merged in a stable galaxy version someday.
+
+There is also a pull request to correctly display genomes stored in data tables when creating a visualization or uploading a file: https://bitbucket.org/galaxy/galaxy-central/pull-request/601/load-genomes-list-from-data-tables-for/diff
+
+Hopefully these patches will be merged in a stable galaxy version someday.
 
 Usage
 =====
 
-To see how to use each script, just launch it with --help option.
+To see how to use each script (not necessarily from BioMAJ), just launch it with --help option.
 
-Known problems
-==============
+Here is an example post-process and remove process configuration for BioMAJ:
+
+    B1.db.post.process=GALAXY
+    GALAXY=galaxy_dm
+
+    galaxy_dm.name=galaxy_dm
+    galaxy_dm.desc=Add files to Galaxy tool data tables
+    galaxy_dm.type=galaxy
+    galaxy_dm.exe=add_galaxy_data_manager.py
+    galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -n "Homo sapiens (${remote.release})" -g ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa --bowtie2 ${datadir}/${dir.version}/${db.name}_${remote.release}/bowtie/all --blastn ${data.dir}/${dir.version}/${db.name}_${remote.release}/blast/Homo_sapiens-ncbi_testing
+
+    db.remove.process=RM_GALAXY
+    RM_GALAXY=rm_galaxy_dm
+
+    rm_galaxy_dm.name=rm_galaxy_dm
+    rm_galaxy_dm.desc=Remove from Galaxy tool data tables
+    rm_galaxy_dm.type=galaxy
+    rm_galaxy_dm.exe=remove_galaxy_data_manager.py
+    rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -f --blastn --bowtie2 --delete
+
+TODO
+====
 
     * There is currently no way to delete a folder contained inside a data library from the API. The workaround is to delete the whole data library, or individual datasets.
-    * Twobit support is still incomplete
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
-    * Visualizations do not see the dbkeys
     
+    * Load url and api key from a config file
+    * Make it possible to use the future BioMAJ new REST API instead of using post processes
+    * Contribute code to bioblend
     
-    * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22 for more info)
+    * Trackster visualizations do not read genome list from data tables: PR #601
+    * Wrong list in upload form: PR #601
+    
+    * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22  and https://github.com/peterjc/galaxy_blast/issues/52 for more info)
     Until the wrappers are updated, you can manually modify the file ncbi_blast_plus/tools/ncbi_blast_plus/ncbi_macros.xml and replace the blocks that look like this:
     
         <options from_file="blastdb.loc">
