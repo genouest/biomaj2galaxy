@@ -8,7 +8,7 @@ from bioblend.galaxy.client import Client
 from bioblend.galaxy import (libraries, histories, workflows, users,
                              genomes, tools, toolshed, config, visual, quotas,
                              groups, datatypes, jobs, forms, ftpfiles)
-from bioblend_contrib.galaxy import (roles, datasets, tool_data)
+from bioblend_contrib.galaxy import (datasets, folders, roles, tool_data)
 from bioblend.galaxyclient import GalaxyClient
 
 
@@ -85,6 +85,7 @@ class GalaxyContribInstance(GalaxyClient):
         self.forms = forms.FormsClient(self)
         self.ftpfiles = ftpfiles.FTPFilesClient(self)
         self.tool_data = tool_data.ToolDataClient(self)
+        self.folders = folders.FoldersClient(self)
 
     @property
     def key(self):
