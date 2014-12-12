@@ -115,7 +115,6 @@ And the same using data libraries:
 TODO
 ====
 
-    * There is currently no way to delete a folder contained inside a data library from the API. The workaround is to delete the whole data library, or individual datasets.
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
     
     * Load url and api key from a config file

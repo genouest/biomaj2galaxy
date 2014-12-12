@@ -24,13 +24,9 @@ def get_library(gi, lib_name):
 
     found_lib = None
     for lib in libs:
-        if not found_lib and lib['name'] == lib_name:
+        if not found_lib and lib['name'] == lib_name and lib['deleted'] == False:
             print("Found library '"+lib_name+"'")
             found_lib = lib['id']
-            if lib['deleted'] == True:
-                print >> sys.stderr, "ERROR: Library '"+lib_name+"' is marked as deleted!"
-                print >> sys.stderr, "You have to undelete this library before using tihs script."
-                sys.exit(1)
 
     if not found_lib:
         print >> sys.stderr, "ERROR: Did not find library '"+lib_name+"'"
@@ -57,13 +53,13 @@ def find_tree(gi, found_lib, folders):
             print("Found folder "+f)
             last_f_id = dist_f[path]['id']
         else:
-            print >> sys.stderr, "Did not find folder "+f
+            print >> sys.stderr, "Did not find folder '"+f+"'"
             sys.exit(1)
 
     return last_f_id
 
-def rm_folder(gi, lib, folder):
-    gi.libraries.delete_library_dataset(lib, folder, True)
+def rm_folder(gi, folder):
+    gi.folders.delete_folder(folder, True)
 
 def rm_lib(gi, lib):
     gi.libraries.delete_library(lib)
@@ -92,8 +88,8 @@ if __name__ == '__main__':
         print("Looking for folder '"+args.folder+"' in library '"+args.library+"'")
         dest_folder = find_tree(gi, found_lib, dest)
 
-        print("Removing folder "+args.folder+" from the library '"+args.library+"'")
-        rm_folder(gi, found_lib, dest_folder)
+        print("Removing folder '"+args.folder+"' from the library '"+args.library+"'")
+        rm_folder(gi, dest_folder)
     
     else:
         print("Removing library '"+args.library+"'")

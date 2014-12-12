@@ -57,13 +57,9 @@ def get_library(gi, lib_name, lib_desc, lib_synopsis):
 
     found_lib = None
     for lib in libs:
-        if not found_lib and lib['name'] == lib_name:
+        if not found_lib and lib['name'] == lib_name and lib['deleted'] == False:
             print("Found library '"+lib_name+"'")
             found_lib = lib['id']
-            if lib['deleted'] == True:
-                print >> sys.stderr, "ERROR: Library '"+lib_name+"' is marked as deleted!"
-                print >> sys.stderr, "You have to undelete this library before using tihs script."
-                sys.exit(1)
 
     if not found_lib:
         print("Did not find library '"+lib_name+"', creating it")
