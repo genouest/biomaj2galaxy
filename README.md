@@ -55,13 +55,13 @@ In most cases, you can install it easily with:
 
     pip install bioblend
 
-The bioblend_contrib directory contains some code to extend the BioBlend library.
+The bioblend_contrib directory contains some code to extend the BioBlend library. This code will probably be sent to the bioblend authors soon.
 
 You need an API key to access your galaxy server. You need to use one from an admin account. The master API key defined in universe_wsgi.ini doesn't work at the time of writing this doc (2014-10-13).
 
 allow_library_path_paste should be set in universe_wsgi.ini
 
-There is a opened pull request concerning the removal of items from the data tables. You will need to apply the patch available here: https://bitbucket.org/galaxy/galaxy-central/pull-request/577/add-an-api-to-remove-items-from-tool-data/diff
+There is an opened pull request concerning the removal of items from the data tables. You will need to apply the patch available here: https://bitbucket.org/galaxy/galaxy-central/pull-request/577/add-an-api-to-remove-items-from-tool-data/diff
 
 There is also a pull request to correctly display genomes stored in data tables when creating a visualization or uploading a file: https://bitbucket.org/galaxy/galaxy-central/pull-request/601/load-genomes-list-from-data-tables-for/diff
 
@@ -90,7 +90,9 @@ Here is an example post-process and remove process configuration for BioMAJ, usi
     rm_galaxy_dm.desc=Remove from Galaxy tool data tables
     rm_galaxy_dm.type=galaxy
     rm_galaxy_dm.exe=remove_galaxy_data_manager.py
-    rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -f --blastn --bowtie2 --delete
+    rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -f --blastn --bowtie2 --delete-len
+
+Note that the --delete-len option is only useful if the path to the *.len files (inside Galaxy tree) is accessible from the machine running BioMAJ.
 
 And the same using data libraries:
 
@@ -101,7 +103,7 @@ And the same using data libraries:
     galaxy_dl.desc=Add files to Galaxy data libraries
     galaxy_dl.type=galaxy
     galaxy_dl.exe=add_galaxy_library.py
-    galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" --lib-desc "Genome of Homo sapiens (version ${remote.release}) downloaded from NCBI" ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa
+    galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" --lib-desc "Genome of Homo sapiens (version ${remote.release}) downloaded from NCBI" -f "${remote.release}" --replace ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa
 
     db.remove.process=RM_GALAXY
     RM_GALAXY=rm_galaxy_dl
@@ -110,7 +112,7 @@ And the same using data libraries:
     rm_galaxy_dl.desc=Remove from Galaxy data libraries
     rm_galaxy_dl.type=galaxy
     rm_galaxy_dl.exe=remove_galaxy_library.py
-    rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})"
+    rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" -f "${remote.release}"
 
 TODO
 ====
