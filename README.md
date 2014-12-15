@@ -121,8 +121,8 @@ TODO
     
     * Load url and api key from a config file
     * Make it possible to use the future BioMAJ new REST API instead of using post processes
-    * Contribute code to bioblend
     
+    * Contribute code to bioblend: done, https://github.com/afgane/bioblend/pull/105
     * Trackster visualizations do not read genome list from data tables: PR #601
     * Wrong list in upload form: PR #601
     
