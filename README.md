@@ -10,7 +10,7 @@ With these python scripts you can perform the following actions on a Galaxy serv
     * Add new items to data libraries
     * Remove items from data libraries
     * Add new items to tool data tables using data managers
-    * Remove items from data libraries
+    * Remove items from tool data tables
 
 These scripts are primarily designed to be used as BioMAJ (http://biomaj.genouest.org) post processes,
 but they can probably used directly from the command line if you need to.
@@ -55,17 +55,20 @@ In most cases, you can install it easily with:
 
     pip install bioblend
 
-The bioblend_contrib directory contains some code to extend the BioBlend library. This code will probably be sent to the bioblend authors soon.
+The bioblend_contrib directory contains some code to extend the BioBlend library. This code has been merged to the official github repository, it will be available out of the box in the next stable release.
 
-You need an API key to access your galaxy server. You need to use one from an admin account. The master API key defined in universe_wsgi.ini doesn't work at the time of writing this doc (2014-10-13).
+A recent version of Galaxy is required: the last code changes were committed on 2015-01-26, any posterior stable version should work. 
 
-allow_library_path_paste should be set in universe_wsgi.ini
+You need an API key to access your galaxy server. You need to use one from an admin account. The master API key defined in config/galaxy.ini doesn't work at the time of writing this doc (2014-10-13).
 
-There is an opened pull request concerning the removal of items from the data tables. You will need to apply the patch available here: https://bitbucket.org/galaxy/galaxy-central/pull-request/577/add-an-api-to-remove-items-from-tool-data/diff
+allow_library_path_paste should be set in config/galaxy.ini
 
-There is also a pull request to correctly display genomes stored in data tables when creating a visualization or uploading a file: https://bitbucket.org/galaxy/galaxy-central/pull-request/601/load-genomes-list-from-data-tables-for/diff
+Finally, if you want to add or remove items from tool data tables (add_galaxy_data_manager.py and remove_galaxy_data_manager.py), you will need to install some data managers.
+First configure your Galaxy server to access the Galaxy User Group Grand Ouest (GUGGO) Tool Shed: open config/tool_sheds_conf.xml and add this line:
 
-Hopefully these patches will be merged in a stable galaxy version someday.
+    <tool_shed name="GenOuest main tool shed" url="http://toolshed.genouest.org/"/>
+
+Then install all the tools in the "Data manager" category of this Tool Shed. Briefly, there is one for each currently supported file format (2bit, blastdb, bowtie, bowtie2, bwa), one to only create a dbkey (when you want to add a genome without a corresponding fasta file) and one for fasta format. The script add_galaxy_data_manager.py automatically uses the right data manager depending on the option you give it on the command line.
 
 Usage
 =====
@@ -123,8 +126,8 @@ TODO
     * Make it possible to use the future BioMAJ new REST API instead of using post processes
     
     * Contribute code to bioblend: done, https://github.com/afgane/bioblend/pull/105
-    * Trackster visualizations do not read genome list from data tables: PR #601
-    * Wrong list in upload form: PR #601
+    * Trackster visualizations do not read genome list from data tables: done, PR #601
+    * Wrong list in upload form: done, PR #601
     
     * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22  and https://github.com/peterjc/galaxy_blast/issues/52 for more info)
     Until the wrappers are updated, you can manually modify the file ncbi_blast_plus/tools/ncbi_blast_plus/ncbi_macros.xml and replace the blocks that look like this:
