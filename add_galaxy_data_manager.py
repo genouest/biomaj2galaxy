@@ -16,6 +16,7 @@ import sys
 import argparse
 import urlparse
 import time
+import configparser
 
 from bioblend_contrib import galaxy
 
@@ -33,7 +34,7 @@ DEFAULT_SLEEP_TIME = 3
 
 def get_dataset_state(gi, hda_id):
     dataset_info = gi.datasets.show_dataset(hda_id)
-    
+
     return dataset_info['state']
 
 def dataset_is_terminal(gi, hda_id):
@@ -47,7 +48,7 @@ def wait_completion(gi, fetch_res, args, sleep_time, exit_on_error=True):
             fetch_res = None
         if fetch_res:
             time.sleep( sleep_time )
-    
+
     dataset_info = gi.datasets.show_dataset(dataset_id)
     status = dataset_info['state']
     if exit_on_error and status == 'error':
@@ -60,18 +61,23 @@ def wait_completion(gi, fetch_res, args, sleep_time, exit_on_error=True):
 
 def get_dbkey_entry(gi, dbkey):
     dbkeys = gi.tool_data.show_data_table('__dbkeys__')
-    
+
     for k in dbkeys['fields']:
         if k[0] == dbkey:
             return k
 
 def check_args(args):
+
+    if not args.config and (not args.url or not args.api_key):
+        print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
+        sys.exit(1)
+
     if args.fasta_custom_sort_list and args.fasta_sorting_method != 'custom':
         args.fasta_custom_sort_list = ''
 
     if args.fasta_custom_sort_handling and args.fasta_sorting_method != 'custom':
         args.fasta_custom_sort_handling = ''
-    
+
     if not args.genome_fasta and not args.fasta and not args.blastn and not args.blastp and not args.bowtie and not args.bowtie2 and not args.bwa and not args.twobit:
         print >> sys.stderr, "ERROR: Nothing to do."
         sys.exit(1)
@@ -114,7 +120,7 @@ def check_args(args):
             for f in args.twobit:
                 checked += [check_path(f),]
             args.twobit = checked
-    
+
     return args
 
 def check_path(f):
@@ -127,15 +133,15 @@ def check_path(f):
 def need_dbkey(args):
     if args.fasta or args.genome_fasta:
         return True
-    
+
     if args.bowtie or args.bowtie2 or args.bwa or args.twobit:
         return True
-    
+
     return False
 
 def get_display_names(paths, names, default_name):
     names = {}
-    
+
     if not paths:
         return names
 
@@ -147,16 +153,38 @@ def get_display_names(paths, names, default_name):
             if default_name:
                 names[p] = default_name
             else:
-                names[p] = os.path.basename(p) # TODO find a default when there is no dbkey (blastdb): use the filename
+                names[p] = os.path.basename(p)
         i += 1
 
     return names
 
+def read_config(config_file):
+
+    if not os.path.isfile(config_file):
+        print >> sys.stderr, "ERROR: File '"+config_file+"' could not be read!"
+        sys.exit(1)
+
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    if 'biomaj2galaxy' not in config:
+        print >> sys.stderr, "ERROR: File '"+config_file+"' is malformed!"
+        sys.exit(1)
+
+    res = {}
+    if 'apikey' in config['biomaj2galaxy']:
+        res['apikey'] = config['biomaj2galaxy']['apikey']
+
+    if 'url' in config['biomaj2galaxy']:
+        res['url'] = config['biomaj2galaxy']['url']
+
+    return res
+
 if __name__ == '__main__':
     #Parse Command Line
     parser = argparse.ArgumentParser()
-    parser.add_argument( '-u', '--url', default='http://localhost:8080', help='Url of the galaxy instance', required=True)
-    parser.add_argument( '-k', '--api-key', help='Galaxy API key', required=True)
+    parser.add_argument( '-c', '--config', help='Load options from config file')
+    parser.add_argument( '-u', '--url', help='Url of the galaxy instance')
+    parser.add_argument( '-k', '--api-key', help='Galaxy API key')
     parser.add_argument( '-d', '--dbkey', help='Dbkey to use (i.e. genome build like \'hg19\')')
     parser.add_argument( '-n', '--dbkey-display-name', help='Display name for the dbkey')
     parser.add_argument( '-g', '--genome-fasta', help='Path to a fasta file corresponding to a full reference genome. It will be used in visualizations for example.')
@@ -165,7 +193,7 @@ if __name__ == '__main__':
     parser.add_argument( '--fasta-custom-sort-list', help='Ordered comma separated list of sequence identifiers to use for sorting fasta file(s) (requires \'-s custom\' option)')
     parser.add_argument( '--fasta-custom-sort-handling', choices=['discard', 'keep_append', 'keep_prepend'], default='discard', help='How to handle non-specified identifiers (requires \'-s custom\' option)')
     parser.add_argument("--no-file-check", help="This option prevent the script from checking the source files existence.\nThis can be useful for files that are available on the web server running Galaxy, but not on the machine running this script.", action="store_true")
-    
+
     # Index pregenerated
     parser.add_argument( '--blastn', help='Path to a pregenerated Blast nucleotide databank (without file extension)', nargs='*') # doesn't need dbkey
     parser.add_argument( '--blastp', help='Path to a pregenerated Blast protein databank (without file extension)', nargs='*') # doesn't need dbkey
@@ -173,7 +201,7 @@ if __name__ == '__main__':
     parser.add_argument( '--bowtie2', help='Path to a pregenerated Bowtie2 index (without file extension)', nargs='*')
     parser.add_argument( '--bwa', help='Path to a pregenerated BWA index (without file extension)', nargs='*')
     parser.add_argument( '--twobit', help='Path to a pregenerated 2bit index (UCSC)', nargs='*')
-    
+
     parser.add_argument( '--genome-fasta-name', help='Display name for the full reference genome (default=--dbkey-display-name or --dbkey)')
     parser.add_argument( '--fasta-name', help='Display name for fasta file, in the same order as --fasta options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--blastn-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --blastn options (default=--dbkey-display-name or --dbkey)', nargs='*')
@@ -182,14 +210,33 @@ if __name__ == '__main__':
     parser.add_argument( '--bowtie2-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --bowtie2 options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--bwa-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --bwa options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--twobit-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --twobit options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    
+
     # TODO support other tables: tophat, tophat2, fasta_indexes
-    
+
     args = parser.parse_args()
-    
+
     args = check_args(args)
-    
-    gi = galaxy.GalaxyContribInstance(url=args.url, key=args.api_key)
+
+    config = {}
+    if args.config:
+        config = read_config(args.config)
+
+    if "url" not in config:
+        if not args.url:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server url (-c or -u option)"
+            sys.exit(1)
+        config['url'] = args.url
+
+    if not config['url'].endswith('/'):
+        config['url'] = config['url'] + "/"
+
+    if "apikey" not in config:
+        if not args.api_key:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server api key (-c or -k option)"
+            sys.exit(1)
+        config['apikey'] = args.api_key
+
+    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
 
     dbkey_entry = get_dbkey_entry(gi, args.dbkey)
     has_dbkey = dbkey_entry != None
@@ -204,7 +251,7 @@ if __name__ == '__main__':
         sys.exit(1)
     elif not args.dbkey and not need_dbkey(args):
         print "No dbkey was specified, but it is not a problem as we don't need it."
-    
+
     # Prepare a default display name that will be used if not specified in given args
     default_name = args.dbkey_display_name
     if not default_name and dbkey_entry:
@@ -222,7 +269,7 @@ if __name__ == '__main__':
     bowtie2_names = get_display_names(args.bowtie2, args.bowtie2_name, default_name)
     bwa_names = get_display_names(args.bwa, args.bwa_name, default_name)
     twobit_names = get_display_names(args.twobit, args.twobit_name, default_name)
-        
+
     # Add the genome fasta if asked
     if args.genome_fasta:
         if not create_dbkey:
@@ -257,7 +304,7 @@ if __name__ == '__main__':
         params['dbkey_name']= default_name
         fetch_res = gi.tools.run_tool( None, ADD_DBKEY_TOOL_ID, params )
         wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)
-    
+
     # Add the not-ref genomes or other fasta files (no .len will be computed)
     if args.fasta:
         for fasta in args.fasta:
@@ -294,7 +341,7 @@ if __name__ == '__main__':
             params['seq_type'] = 'blastdb'
             fetch_res = gi.tools.run_tool( None, ADD_BLAST_TOOL_ID, params )
             wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)
-    
+
     if args.blastp:
         for blastp in args.blastp:
             print "Adding a new blastdb_p index '"+blastp+"'"

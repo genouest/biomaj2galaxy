@@ -14,6 +14,7 @@
 from bioblend_contrib import galaxy
 import argparse
 import os, sys
+import configparser
 
 def check_input(source, no_file_check):
     if not no_file_check:
@@ -125,11 +126,33 @@ def check_existing(gi, lib, dest, source, replace):
             else:
                 print e['name']+" already present in the data library: adding another copy"
 
+def read_config(config_file):
+
+    if not os.path.isfile(config_file):
+        print >> sys.stderr, "ERROR: File '"+config_file+"' could not be read!"
+        sys.exit(1)
+
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    if 'biomaj2galaxy' not in config:
+        print >> sys.stderr, "ERROR: File '"+config_file+"' is malformed!"
+        sys.exit(1)
+
+    res = {}
+    if 'apikey' in config['biomaj2galaxy']:
+        res['apikey'] = config['biomaj2galaxy']['apikey']
+
+    if 'url' in config['biomaj2galaxy']:
+        res['url'] = config['biomaj2galaxy']['url']
+
+    return res
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-u", "--url", help="Url of the galaxy instance", default='http://localhost:8080', required=True)
-    parser.add_argument("-k", "--api-key", help="Galaxy API key", required=True)
+    parser.add_argument( '-c', '--config', help='Load options from config file')
+    parser.add_argument( '-u', '--url', help='Url of the galaxy instance')
+    parser.add_argument( '-k', '--api-key', help='Galaxy API key')
     parser.add_argument("-l", "--library", help="Data library where the data will be placed", required=True)
     parser.add_argument("-f", "--folder", help="Data library folder where the data will be placed (default=/)", default='/')
     parser.add_argument("-r", "--roles", help="Restrict acces to given group(s) (comma separated list). WARNING: the permission of the whole library is modified when using this option.")
@@ -139,7 +162,12 @@ if __name__ == '__main__':
     parser.add_argument("--no-file-check", help="This option prevent the script from checking the source files existence.\nThis can be useful for files that are available on the web server running Galaxy, but not on the machine running this script.", action="store_true")
     parser.add_argument("--replace", help="If activated, files already present in the data library (with the same name) will be replaced", action="store_true")
     parser.add_argument("source", nargs="+", help="Path of the file(s) to add to the data library")
+
     args = parser.parse_args()
+    
+    if not args.config and (not args.url or not args.api_key):
+        print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
+        sys.exit(1)
 
     datatype = args.datatype
     if not datatype:
@@ -149,7 +177,26 @@ if __name__ == '__main__':
 
     print("Using galaxy instance '"+args.url+"' with api key '"+args.api_key+"'")
 
-    gi = galaxy.GalaxyContribInstance(url=args.url, key=args.api_key)
+    config = {}
+    if args.config:
+        config = read_config(args.config)
+
+    if "url" not in config:
+        if not args.url:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server url (-c or -u option)"
+            sys.exit(1)
+        config['url'] = args.url
+
+    if not config['url'].endswith('/'):
+        config['url'] = config['url'] + "/"
+
+    if "apikey" not in config:
+        if not args.api_key:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server api key (-c or -k option)"
+            sys.exit(1)
+        config['apikey'] = args.api_key
+
+    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
 
     r_roles = []
     if args.roles:

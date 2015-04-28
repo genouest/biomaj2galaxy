@@ -16,6 +16,7 @@ import sys
 import argparse
 import urlparse
 import time
+import configparser
 
 from bioblend_contrib import galaxy
 
@@ -57,11 +58,33 @@ def remove_files(path, links_only = True, extensions = []):
         else:
             print >> sys.stderr, "Could not remove file "+path+" (not found)"
 
+def read_config(config_file):
+
+    if not os.path.isfile(config_file):
+        print >> sys.stderr, "ERROR: File '"+config_file+"' could not be read!"
+        sys.exit(1)
+
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    if 'biomaj2galaxy' not in config:
+        print >> sys.stderr, "ERROR: File '"+config_file+"' is malformed!"
+        sys.exit(1)
+
+    res = {}
+    if 'apikey' in config['biomaj2galaxy']:
+        res['apikey'] = config['biomaj2galaxy']['apikey']
+
+    if 'url' in config['biomaj2galaxy']:
+        res['url'] = config['biomaj2galaxy']['url']
+
+    return res
+
 if __name__ == '__main__':
     #Parse Command Line
     parser = argparse.ArgumentParser()
-    parser.add_argument( '-u', '--url', default='http://localhost:8080', help='Url of the galaxy instance', required=True)
-    parser.add_argument( '-k', '--api-key', help='Galaxy API key', required=True)
+    parser.add_argument( '-c', '--config', help='Load options from config file')
+    parser.add_argument( '-u', '--url', help='Url of the galaxy instance')
+    parser.add_argument( '-k', '--api-key', help='Galaxy API key')
     parser.add_argument( '-d', '--dbkey', help='Dbkey to remove (i.e. genome build like \'hg19\')', required=True)
     
     # Index pregenerated
@@ -82,8 +105,31 @@ if __name__ == '__main__':
     # TODO support other tables: tophat, tophat2, fasta_indexes
     
     args = parser.parse_args()
+
+    if not args.config and (not args.url or not args.api_key):
+        print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
+        sys.exit(1)
     
-    gi = galaxy.GalaxyContribInstance(url=args.url, key=args.api_key)
+    config = {}
+    if args.config:
+        config = read_config(args.config)
+
+    if "url" not in config:
+        if not args.url:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server url (-c or -u option)"
+            sys.exit(1)
+        config['url'] = args.url
+
+    if not config['url'].endswith('/'):
+        config['url'] = config['url'] + "/"
+
+    if "apikey" not in config:
+        if not args.api_key:
+            print >> sys.stderr, "ERROR: you must configure the galaxy server api key (-c or -k option)"
+            sys.exit(1)
+        config['apikey'] = args.api_key
+
+    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
 
     # Always delete from the __dbkeys__ table
     table = '__dbkeys__'

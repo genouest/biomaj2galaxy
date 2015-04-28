@@ -117,12 +117,32 @@ And the same using data libraries:
     rm_galaxy_dl.exe=remove_galaxy_library.py
     rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" -f "${remote.release}"
 
+
+Loading url and api key from a config file
+==========================================
+
+If you don't want to write your Galaxy url or api key in the command line, you can write these parameters in a config file.
+Create a file looking like this:
+
+    [biomaj2galaxy]
+    url=http://example.org/galaxy/
+    apikey=my_api_key
+
+You can then replace the following options in the command lines:
+
+    -u http://example.org/galaxy/ -k my_api_key
+
+By this single option:
+
+    -c your_config_file.ini
+
+-u and -k options are overriden by the content of the config file
+
 TODO
 ====
 
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
     
-    * Load url and api key from a config file
     * Make it possible to use the future BioMAJ new REST API instead of using post processes
     
     * Contribute code to bioblend: done, https://github.com/afgane/bioblend/pull/105
