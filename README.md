@@ -15,6 +15,12 @@ With these python scripts you can perform the following actions on a Galaxy serv
 These scripts are primarily designed to be used as BioMAJ (http://biomaj.genouest.org) post processes,
 but they can probably used directly from the command line if you need to.
 
+This work has been published in GigaScience:
+
+BioMAJ2Galaxy: automatic update of reference data in Galaxy using BioMAJ.
+Bretaudeau A, Monjeaud C, Le Bras Y, Legeai F, Collin O.
+Gigascience. 2015 May 9;4:22. doi: 10.1186/s13742-015-0063-8. eCollection 2015.
+
 Licence
 =======
 
