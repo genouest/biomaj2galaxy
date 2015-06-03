@@ -90,7 +90,7 @@ Here is an example post-process and remove process configuration for BioMAJ, usi
     galaxy_dm.desc=Add files to Galaxy tool data tables
     galaxy_dm.type=galaxy
     galaxy_dm.exe=add_galaxy_data_manager.py
-    galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -n "Homo sapiens (${remote.release})" -g ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa --bowtie2 ${datadir}/${dir.version}/${db.name}_${remote.release}/bowtie/all --blastn ${data.dir}/${dir.version}/${db.name}_${remote.release}/blast/Homo_sapiens-ncbi_testing
+    galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${localrelease}" -n "Homo sapiens (${remoterelease})" -g ${data.dir}/${dir.version}/${localrelease}/fasta/all.fa --bowtie2 ${datadir}/${dir.version}/${localrelease}/bowtie/all --blastn ${data.dir}/${dir.version}/${localrelease}/blast/Homo_sapiens-ncbi_testing
 
     db.remove.process=RM_GALAXY
     RM_GALAXY=rm_galaxy_dm
@@ -99,7 +99,7 @@ Here is an example post-process and remove process configuration for BioMAJ, usi
     rm_galaxy_dm.desc=Remove from Galaxy tool data tables
     rm_galaxy_dm.type=galaxy
     rm_galaxy_dm.exe=remove_galaxy_data_manager.py
-    rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${remote.release}" -f --blastn --bowtie2 --delete-len
+    rm_galaxy_dm.args=-u http://example.org/galaxy/ -k my_api_key -d "${db.name}-${removedrelease}" -f --blastn --bowtie2 --delete-len
 
 Note that the --delete-len option is only useful if the path to the *.len files (inside Galaxy tree) is accessible from the machine running BioMAJ.
 
@@ -112,7 +112,7 @@ And the same using data libraries:
     galaxy_dl.desc=Add files to Galaxy data libraries
     galaxy_dl.type=galaxy
     galaxy_dl.exe=add_galaxy_library.py
-    galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" --lib-desc "Genome of Homo sapiens (version ${remote.release}) downloaded from NCBI" -f "${remote.release}" --replace ${data.dir}/${dir.version}/${db.name}_${remote.release}/fasta/all.fa
+    galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remoterelease})" --lib-desc "Genome of Homo sapiens (version ${remoterelease}) downloaded from NCBI" -f "${localrelease}" --replace ${data.dir}/${dir.version}/${localrelease}/fasta/all.fa
 
     db.remove.process=RM_GALAXY
     RM_GALAXY=rm_galaxy_dl
@@ -121,7 +121,7 @@ And the same using data libraries:
     rm_galaxy_dl.desc=Remove from Galaxy data libraries
     rm_galaxy_dl.type=galaxy
     rm_galaxy_dl.exe=remove_galaxy_library.py
-    rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" -f "${remote.release}"
+    rm_galaxy_dl.args=-u http://example.org/galaxy/ -k my_api_key -l "Homo sapiens genome (${remote.release})" -f "${db.name}-${removedrelease}"
 
 
 Loading url and api key from a config file
