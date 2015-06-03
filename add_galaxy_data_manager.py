@@ -93,12 +93,12 @@ def check_args(args):
         if args.blastn:
             checked = []
             for f in args.blastn:
-                checked += [check_path(f+".nin")[:-4],]
+                checked += [check_path(f+".nin", f+".00.nin")[:-4],]
             args.blastn = checked
         if args.blastp:
             checked = []
             for f in args.blastp:
-                checked += [check_path(f+".pin")[:-4],]
+                checked += [check_path(f+".pin", f+".00.pin")[:-4],]
             args.blastp = checked
         if args.bowtie:
             checked = []
@@ -123,12 +123,13 @@ def check_args(args):
 
     return args
 
-def check_path(f):
-    if not os.path.isfile(f):
-        print >> sys.stderr, "ERROR: File '"+f+"' could not be read!"
-        sys.exit(1)
-    else:
-        return os.path.abspath(f)
+def check_path(*files):
+    for f in files:
+        if os.path.isfile(f):
+            return os.path.abspath(f)
+
+    print >> sys.stderr, "ERROR: File '"+str(files)+"' could not be read!"
+    sys.exit(1)
 
 def need_dbkey(args):
     if args.fasta or args.genome_fasta:
