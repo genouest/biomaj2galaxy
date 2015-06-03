@@ -141,23 +141,23 @@ def need_dbkey(args):
     return False
 
 def get_display_names(paths, names, default_name):
-    names = {}
+    res_names = {}
 
     if not paths:
-        return names
+        return res_names
 
     i = 0
     for p in paths:
         if i < len(names):
-            names[p] = names[i]
+            res_names[p] = names[i]
         else:
             if default_name:
-                names[p] = default_name
+                res_names[p] = default_name
             else:
-                names[p] = os.path.basename(p)
+                res_names[p] = os.path.basename(p)
         i += 1
 
-    return names
+    return res_names
 
 def read_config(config_file):
 
