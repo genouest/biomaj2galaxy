@@ -189,28 +189,28 @@ if __name__ == '__main__':
     parser.add_argument( '-d', '--dbkey', help='Dbkey to use (i.e. genome build like \'hg19\')')
     parser.add_argument( '-n', '--dbkey-display-name', help='Display name for the dbkey')
     parser.add_argument( '-g', '--genome-fasta', help='Path to a fasta file corresponding to a full reference genome. It will be used in visualizations for example.')
-    parser.add_argument( '-f', '--fasta', help='Path to a fasta file that is not a full reference genome (repeat the option for multiple fasta files)', nargs='*')
+    parser.add_argument( '-f', '--fasta', help='Path to fasta file(s) that is/are not a full reference genome (space separated if multiple fasta files)', nargs='*')
     parser.add_argument( '-s', '--fasta-sorting-method', choices=['as_is', 'lexicographical', 'gatk', 'custom'], default='as_is', help='Method used for the sorting of fasta file(s)')
     parser.add_argument( '--fasta-custom-sort-list', help='Ordered comma separated list of sequence identifiers to use for sorting fasta file(s) (requires \'-s custom\' option)')
     parser.add_argument( '--fasta-custom-sort-handling', choices=['discard', 'keep_append', 'keep_prepend'], default='discard', help='How to handle non-specified identifiers (requires \'-s custom\' option)')
     parser.add_argument("--no-file-check", help="This option prevent the script from checking the source files existence.\nThis can be useful for files that are available on the web server running Galaxy, but not on the machine running this script.", action="store_true")
 
     # Index pregenerated
-    parser.add_argument( '--blastn', help='Path to a pregenerated Blast nucleotide databank (without file extension)', nargs='*') # doesn't need dbkey
-    parser.add_argument( '--blastp', help='Path to a pregenerated Blast protein databank (without file extension)', nargs='*') # doesn't need dbkey
-    parser.add_argument( '--bowtie', help='Path to a pregenerated Bowtie index (without file extension)', nargs='*')
-    parser.add_argument( '--bowtie2', help='Path to a pregenerated Bowtie2 index (without file extension)', nargs='*')
-    parser.add_argument( '--bwa', help='Path to a pregenerated BWA index (without file extension)', nargs='*')
-    parser.add_argument( '--twobit', help='Path to a pregenerated 2bit index (UCSC)', nargs='*')
+    parser.add_argument( '--blastn', help='Path(s) to pregenerated Blast nucleotide databank(s) (without file extension, space separated if multiple)', nargs='*') # doesn't need dbkey
+    parser.add_argument( '--blastp', help='Path(s) to pregenerated Blast protein databank(s) (without file extension, space separated if multiple)', nargs='*') # doesn't need dbkey
+    parser.add_argument( '--bowtie', help='Path(s) to pregenerated Bowtie index (without file extension, space separated if multiple)', nargs='*')
+    parser.add_argument( '--bowtie2', help='Path(s) to pregenerated Bowtie2 index (without file extension, space separated if multiple)', nargs='*')
+    parser.add_argument( '--bwa', help='Path(s) to pregenerated BWA index (without file extension, space separated if multiple)', nargs='*')
+    parser.add_argument( '--twobit', help='Path(s) to pregenerated 2bit index (UCSC) (space separated if multiple)', nargs='*')
 
     parser.add_argument( '--genome-fasta-name', help='Display name for the full reference genome (default=--dbkey-display-name or --dbkey)')
-    parser.add_argument( '--fasta-name', help='Display name for fasta file, in the same order as --fasta options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--blastn-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --blastn options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--blastp-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --blastp options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--bowtie-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --bowtie options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--bowtie2-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --bowtie2 options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--bwa-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --bwa options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--twobit-name', help='Display name for pregenerated Blast nucleotide databank, in the same order as --twobit options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--fasta-name', help='Display name(s) for fasta file, in the same order as --fasta options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--blastn-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --blastn options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--blastp-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --blastp options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--bowtie-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bowtie options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--bowtie2-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bowtie2 options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--bwa-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bwa options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--twobit-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --twobit options (default=--dbkey-display-name or --dbkey)', nargs='*')
 
     # TODO support other tables: tophat, tophat2, fasta_indexes
 
