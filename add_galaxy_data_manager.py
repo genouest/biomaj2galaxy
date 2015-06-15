@@ -148,7 +148,7 @@ def get_display_names(paths, names, default_name):
 
     i = 0
     for p in paths:
-        if i < len(names):
+        if names and i < len(names):
             res_names[p] = names[i]
         else:
             if default_name:
