@@ -91,6 +91,7 @@ if __name__ == '__main__':
     parser.add_argument( '-f', '--fasta', help='Remove given dbkey from the list of fasta files', action="store_true")
     parser.add_argument( '--blastn', help='Remove given id from the list of pregenerated Blast nucleotide databank', action="store_true")
     parser.add_argument( '--blastp', help='Remove given id from the list of pregenerated Blast protein databank', action="store_true")
+    parser.add_argument( '--blastd', help='Remove given id from the list of pregenerated Blast domain databank', action="store_true")
     parser.add_argument( '--bowtie', help='Remove given dbkey from the list of pregenerated Bowtie index', action="store_true")
     parser.add_argument( '--bowtie2', help='Remove given dbkey from the list of pregenerated Bowtie2 index', action="store_true")
     parser.add_argument( '--bwa', help='Remove given dbkey from the list of pregenerated BWA index', action="store_true")
@@ -149,7 +150,7 @@ if __name__ == '__main__':
                 if args.delete or args.delete_links:
                     remove_files(entry[3], args.delete_links)
 
-    if args.blastn:        
+    if args.blastn:
         table = 'blastdb'
         table_entries = get_table_entries(gi, table, args.dbkey)
         if table_entries:
@@ -158,7 +159,7 @@ if __name__ == '__main__':
                 if args.delete or args.delete_links:
                     remove_files(entry[2], args.delete_links, ['.nal', '.nhr', '.nin', '.nnd', '.nni', '.nsd', '.nsi', '.nsq']) # FIXME handle multi volume databanks
 
-    if args.blastp:        
+    if args.blastp:
         table = 'blastdb_p'
         table_entries = get_table_entries(gi, table, args.dbkey)
         if table_entries:
@@ -166,6 +167,15 @@ if __name__ == '__main__':
                 remove_table_entry(gi, table, entry)
                 if args.delete or args.delete_links:
                     remove_files(entry[2], args.delete_links, ['.pal', '.phr', '.pin', '.pnd', '.pni', '.psd', '.psi', '.psq']) # FIXME handle multi volume databanks
+
+    if args.blastd:
+        table = 'blastdb_d'
+        table_entries = get_table_entries(gi, table, args.dbkey)
+        if table_entries:
+            for entry in table_entries:
+                remove_table_entry(gi, table, entry)
+                if args.delete or args.delete_links:
+                    remove_files(entry[2], args.delete_links, ['.aux', '.freq', '.loo', '.pal', '.phr', '.pin', '.pnd', '.pni', '.psd', '.psi', '.psq', '.rps']) # FIXME handle multi volume databanks
 
     if args.bowtie:        
         table = 'bowtie_indexes'
