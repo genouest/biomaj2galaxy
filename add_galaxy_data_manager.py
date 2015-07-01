@@ -351,7 +351,7 @@ if __name__ == '__main__':
         for blastn in args.blastn:
             print "Adding a new blastdb index '"+blastn+"'"
             params = {}
-            if args.dbkey:
+            if args.dbkey and len(args.blastn) > 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
                 params['blastdb_id'] = '' # Let it be generated
@@ -365,7 +365,7 @@ if __name__ == '__main__':
         for blastp in args.blastp:
             print "Adding a new blastdb_p index '"+blastp+"'"
             params = {}
-            if args.dbkey:
+            if args.dbkey and len(args.blastp) > 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
                 params['blastdb_id'] = '' # Let it be generated
@@ -379,7 +379,7 @@ if __name__ == '__main__':
         for blastd in args.blastd:
             print "Adding a new blastdb_d index '"+blastd+"'"
             params = {}
-            if args.dbkey:
+            if args.dbkey and len(args.blastd) > 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
                 params['blastdb_id'] = '' # Let it be generated
