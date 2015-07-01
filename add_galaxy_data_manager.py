@@ -78,7 +78,7 @@ def check_args(args):
     if args.fasta_custom_sort_handling and args.fasta_sorting_method != 'custom':
         args.fasta_custom_sort_handling = ''
 
-    if not args.genome_fasta and not args.fasta and not args.blastn and not args.blastp and not args.bowtie and not args.bowtie2 and not args.bwa and not args.twobit:
+    if not args.genome_fasta and not args.fasta and not args.blastn and not args.blastp and not args.blastd and not args.bowtie and not args.bowtie2 and not args.bwa and not args.twobit:
         print >> sys.stderr, "ERROR: Nothing to do."
         sys.exit(1)
 
@@ -100,6 +100,11 @@ def check_args(args):
             for f in args.blastp:
                 checked += [check_path(f+".pin", f+".00.pin")[:-4],]
             args.blastp = checked
+        if args.blastd:
+            checked = []
+            for f in args.blastd:
+                checked += [check_path(f+".rps")[:-4],]
+            args.blastd = checked
         if args.bowtie:
             checked = []
             for f in args.bowtie:
@@ -198,6 +203,7 @@ if __name__ == '__main__':
     # Index pregenerated
     parser.add_argument( '--blastn', help='Path(s) to pregenerated Blast nucleotide databank(s) (without file extension, space separated if multiple)', nargs='*') # doesn't need dbkey
     parser.add_argument( '--blastp', help='Path(s) to pregenerated Blast protein databank(s) (without file extension, space separated if multiple)', nargs='*') # doesn't need dbkey
+    parser.add_argument( '--blastd', help='Path(s) to pregenerated Blast domain databank(s) (without file extension, space separated if multiple)', nargs='*') # doesn't need dbkey
     parser.add_argument( '--bowtie', help='Path(s) to pregenerated Bowtie index (without file extension, space separated if multiple)', nargs='*')
     parser.add_argument( '--bowtie2', help='Path(s) to pregenerated Bowtie2 index (without file extension, space separated if multiple)', nargs='*')
     parser.add_argument( '--bwa', help='Path(s) to pregenerated BWA index (without file extension, space separated if multiple)', nargs='*')
@@ -206,7 +212,8 @@ if __name__ == '__main__':
     parser.add_argument( '--genome-fasta-name', help='Display name for the full reference genome (default=--dbkey-display-name or --dbkey)')
     parser.add_argument( '--fasta-name', help='Display name(s) for fasta file, in the same order as --fasta options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--blastn-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --blastn options (default=--dbkey-display-name or --dbkey)', nargs='*')
-    parser.add_argument( '--blastp-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --blastp options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--blastp-name', help='Display name(s) for pregenerated Blast protein databank, in the same order as --blastp options (default=--dbkey-display-name or --dbkey)', nargs='*')
+    parser.add_argument( '--blastd-name', help='Display name(s) for pregenerated Blast domain databank, in the same order as --blastd options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--bowtie-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bowtie options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--bowtie2-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bowtie2 options (default=--dbkey-display-name or --dbkey)', nargs='*')
     parser.add_argument( '--bwa-name', help='Display name(s) for pregenerated Blast nucleotide databank, in the same order as --bwa options (default=--dbkey-display-name or --dbkey)', nargs='*')
@@ -266,6 +273,7 @@ if __name__ == '__main__':
     fasta_names = get_display_names(args.fasta, args.fasta_name, default_name)
     blastn_names = get_display_names(args.blastn, args.blastn_name, default_name)
     blastp_names = get_display_names(args.blastp, args.blastp_name, default_name)
+    blastd_names = get_display_names(args.blastd, args.blastd_name, default_name)
     bowtie_names = get_display_names(args.bowtie, args.bowtie_name, default_name)
     bowtie2_names = get_display_names(args.bowtie2, args.bowtie2_name, default_name)
     bwa_names = get_display_names(args.bwa, args.bwa_name, default_name)
@@ -354,6 +362,20 @@ if __name__ == '__main__':
             params['blastdb_name'] = blastp_names[blastp]
             params['blastdb_path'] = blastp
             params['seq_type'] = 'blastdb_p'
+            fetch_res = gi.tools.run_tool( None, ADD_BLAST_TOOL_ID, params )
+            wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)
+
+    if args.blastd:
+        for blastd in args.blastd:
+            print "Adding a new blastdb_d index '"+blastd+"'"
+            params = {}
+            if args.dbkey:
+                params['blastdb_id'] = args.dbkey
+            else:
+                params['blastdb_id'] = '' # Let it be generated
+            params['blastdb_name'] = blastd_names[blastd]
+            params['blastdb_path'] = blastd
+            params['seq_type'] = 'blastdb_d'
             fetch_res = gi.tools.run_tool( None, ADD_BLAST_TOOL_ID, params )
             wait_completion(gi, fetch_res, args, DEFAULT_SLEEP_TIME)
 
