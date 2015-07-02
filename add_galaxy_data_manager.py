@@ -94,20 +94,20 @@ def check_args(args):
             checked = []
             for f in args.blastn:
                 ok_path = check_path(f+".nin", f+".00.nin")
-                if ok_path.endswith(".nin"):
-                    ok_path = ok_path[:-4]
-                elif ok_path.endswith(".00.nin"):
+                if ok_path.endswith(".00.nin"):
                     ok_path = ok_path[:-7]
+                elif ok_path.endswith(".nin"):
+                    ok_path = ok_path[:-4]
                 checked += [ok_path,]
             args.blastn = checked
         if args.blastp:
             checked = []
             for f in args.blastp:
                 ok_path = check_path(f+".pin", f+".00.pin")
-                if ok_path.endswith(".pin"):
-                    ok_path = ok_path[:-4]
-                elif ok_path.endswith(".00.pin"):
+                if ok_path.endswith(".00.pin"):
                     ok_path = ok_path[:-7]
+                elif ok_path.endswith(".pin"):
+                    ok_path = ok_path[:-4]
                 checked += [ok_path,]
             args.blastp = checked
         if args.blastd:
