@@ -66,16 +66,16 @@ def read_config(config_file):
 
     config = configparser.ConfigParser()
     config.read(config_file)
-    if 'biomaj2galaxy' not in config:
+    if not config.has_section('biomaj2galaxy'):
         print >> sys.stderr, "ERROR: File '"+config_file+"' is malformed!"
         sys.exit(1)
 
     res = {}
-    if 'apikey' in config['biomaj2galaxy']:
-        res['apikey'] = config['biomaj2galaxy']['apikey']
+    if config.has_option('biomaj2galaxy', 'apikey'):
+        res['apikey'] = config.get('biomaj2galaxy', 'apikey')
 
-    if 'url' in config['biomaj2galaxy']:
-        res['url'] = config['biomaj2galaxy']['url']
+    if config.has_option('biomaj2galaxy', 'url'):
+        res['url'] = config.get('biomaj2galaxy', 'url')
 
     return res
 
