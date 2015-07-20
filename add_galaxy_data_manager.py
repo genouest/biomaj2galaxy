@@ -17,6 +17,7 @@ import argparse
 import urlparse
 import time
 import configparser
+import uuid
 
 from bioblend_contrib import galaxy
 
@@ -354,7 +355,7 @@ if __name__ == '__main__':
             if args.dbkey and len(args.blastn) == 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
-                params['blastdb_id'] = '' # Let it be generated
+                params['blastdb_id'] = args.dbkey + "_" + str(uuid.uuid4()) # Let it be generated
             params['blastdb_name'] = blastn_names[blastn]
             params['blastdb_path'] = blastn
             params['seq_type'] = 'blastdb'
@@ -368,7 +369,7 @@ if __name__ == '__main__':
             if args.dbkey and len(args.blastp) == 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
-                params['blastdb_id'] = '' # Let it be generated
+                params['blastdb_id'] = args.dbkey + "_" + str(uuid.uuid4()) # Let it be generated
             params['blastdb_name'] = blastp_names[blastp]
             params['blastdb_path'] = blastp
             params['seq_type'] = 'blastdb_p'
@@ -382,7 +383,7 @@ if __name__ == '__main__':
             if args.dbkey and len(args.blastd) == 1: # The id must be unique, only use dbkey if adding only one blastdb
                 params['blastdb_id'] = args.dbkey
             else:
-                params['blastdb_id'] = '' # Let it be generated
+                params['blastdb_id'] = args.dbkey + "_" + str(uuid.uuid4()) # Let it be generated
             params['blastdb_name'] = blastd_names[blastd]
             params['blastdb_path'] = blastd
             params['seq_type'] = 'blastdb_d'

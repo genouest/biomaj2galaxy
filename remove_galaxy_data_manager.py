@@ -20,14 +20,14 @@ import configparser
 
 from bioblend_contrib import galaxy
 
-def get_table_entries(gi, table, entry_id, field = 0):
+def get_table_entries(gi, table, entry_id, field = 0, starting = False):
 
     entries = gi.tool_data.show_data_table(table)
     
     matches = []
     
     for line in entries['fields']:
-        if line[field] == entry_id:
+        if (not starting and line[field] == entry_id) or (starting and line[field].startswith(entry_id)):
             matches.append(line)
 
     return matches
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
     if args.blastn:
         table = 'blastdb'
-        table_entries = get_table_entries(gi, table, args.dbkey)
+        table_entries = get_table_entries(gi, table, args.dbkey, starting = True)
         if table_entries:
             for entry in table_entries:
                 remove_table_entry(gi, table, entry)
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
     if args.blastp:
         table = 'blastdb_p'
-        table_entries = get_table_entries(gi, table, args.dbkey)
+        table_entries = get_table_entries(gi, table, args.dbkey, starting = True)
         if table_entries:
             for entry in table_entries:
                 remove_table_entry(gi, table, entry)
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
     if args.blastd:
         table = 'blastdb_d'
-        table_entries = get_table_entries(gi, table, args.dbkey)
+        table_entries = get_table_entries(gi, table, args.dbkey, starting = True)
         if table_entries:
             for entry in table_entries:
                 remove_table_entry(gi, table, entry)
