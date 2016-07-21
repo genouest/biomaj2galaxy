@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##
 # This software is governed by the CeCILL license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
 # "http://www.cecill.info".
@@ -41,7 +41,7 @@ def find_tree(gi, found_lib, folders):
     Returns the id of the last folder of the tree if it was completely found
     """
     dist_folders = gi.libraries.get_folders(found_lib)
-    
+
     dist_f = {}
     for f in dist_folders:
         dist_f[f['name']] = f
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
         print("Removing folder '"+args.folder+"' from the library '"+args.library+"'")
         rm_folder(gi, dest_folder)
-    
+
     else:
         print("Removing library '"+args.library+"'")
         rm_lib(gi, found_lib)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##
 # This software is governed by the CeCILL license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
 # "http://www.cecill.info".
@@ -38,7 +38,7 @@ def get_roles(gi, roles):
     all_remotes = {}
     for r in remotes:
         all_remotes[r['name']] = r['id']
-    
+
     ids = []
     for a in roles:
         if a not in all_remotes:
@@ -46,7 +46,7 @@ def get_roles(gi, roles):
             sys.exit(1)
         else:
             ids.append(all_remotes[a])
-    
+
     return ids
 
 def get_library(gi, lib_name, lib_desc, lib_synopsis):
@@ -75,7 +75,7 @@ def create_tree(gi, found_lib, folders):
     Returns the id of the last folder of the tree
     """
     dist_folders = gi.libraries.get_folders(found_lib)
-    
+
     dist_f = {}
     for f in dist_folders:
         dist_f[f['name']] = f
@@ -116,7 +116,7 @@ def check_existing(gi, lib, dest, source, replace):
     files = []
     for f in source:
         files.append(dest+"/"+os.path.basename(f))
-        
+
     libs = gi.libraries.show_library(lib, True)
     for e in libs:
         if e['type'] == 'file' and e['name'] in files:
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     parser.add_argument("source", nargs="+", help="Path of the file(s) to add to the data library")
 
     args = parser.parse_args()
-    
+
     if not args.config and (not args.url or not args.api_key):
         print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
         sys.exit(1)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
         r_roles = get_roles(gi, roles)
 
     print("Adding to data library '"+str(args.library)+"'")
-    
+
     if not args.folder:
         args.folder = '/'
     dest = os.path.normpath(args.folder)

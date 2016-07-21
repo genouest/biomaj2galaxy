@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##
 # This software is governed by the CeCILL license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
 # "http://www.cecill.info".
@@ -23,9 +23,9 @@ from bioblend_contrib import galaxy
 def get_table_entries(gi, table, entry_id, field = 0, starting = False):
 
     entries = gi.tool_data.show_data_table(table)
-    
+
     matches = []
-    
+
     for line in entries['fields']:
         if (not starting and line[field] == entry_id) or (starting and line[field].startswith(entry_id)):
             matches.append(line)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     parser.add_argument( '-u', '--url', help='Url of the galaxy instance')
     parser.add_argument( '-k', '--api-key', help='Galaxy API key')
     parser.add_argument( '-d', '--dbkey', help='Dbkey to remove (i.e. genome build like \'hg19\')', required=True)
-    
+
     # Index pregenerated
     parser.add_argument( '-f', '--fasta', help='Remove given dbkey from the list of fasta files', action="store_true")
     parser.add_argument( '--blastn', help='Remove given id from the list of pregenerated Blast nucleotide databank', action="store_true")
@@ -96,21 +96,21 @@ if __name__ == '__main__':
     parser.add_argument( '--bowtie2', help='Remove given dbkey from the list of pregenerated Bowtie2 index', action="store_true")
     parser.add_argument( '--bwa', help='Remove given dbkey from the list of pregenerated BWA index', action="store_true")
     parser.add_argument( '--twobit', help='Remove given dbkey from the list of pregenerated 2bit index (UCSC)', action="store_true")
-    
+
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument( '--delete', help='Remove from disk the files referenced in the data tables (except len files from __dbkeys__). Works only if the files are available on the machine running this script.', action="store_true")
     group.add_argument( '--delete-links', help='Remove from disk the files referenced in the data tables, only if they are symlinks (except len files from __dbkeys__). Works only if the files are available on the machine running this script.', action="store_true")
 
     parser.add_argument( '--delete-len', help='Remove from disk the len file referenced in the __dbkeys__ data table. Works only if the files are available on the machine running this script.', action="store_true")
-    
+
     # TODO support other tables: tophat, tophat2, fasta_indexes
-    
+
     args = parser.parse_args()
 
     if not args.config and (not args.url or not args.api_key):
         print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
         sys.exit(1)
-    
+
     config = {}
     if args.config:
         config = read_config(args.config)
@@ -177,7 +177,7 @@ if __name__ == '__main__':
                 if args.delete or args.delete_links:
                     remove_files(entry[2], args.delete_links, ['.aux', '.freq', '.loo', '.pal', '.phr', '.pin', '.pnd', '.pni', '.psd', '.psi', '.psq', '.rps']) # FIXME handle multi volume databanks
 
-    if args.bowtie:        
+    if args.bowtie:
         table = 'bowtie_indexes'
         table_entries = get_table_entries(gi, table, args.dbkey, 1)
         if table_entries:
@@ -186,7 +186,7 @@ if __name__ == '__main__':
                 if args.delete or args.delete_links:
                     remove_files(entry[3], args.delete_links, ['.1.ebwt', '.2.ebwt', '.3.ebwt', '.4.ebwt', '.rev.1.ebwt', '.rev.2.ebwt'])
 
-    if args.bowtie2:        
+    if args.bowtie2:
         table = 'bowtie2_indexes'
         table_entries = get_table_entries(gi, table, args.dbkey, 1)
         if table_entries:
@@ -195,7 +195,7 @@ if __name__ == '__main__':
                 if args.delete or args.delete_links:
                     remove_files(entry[3], args.delete_links, ['.1.bt2', '.2.bt2', '.3.bt2', '.4.bt2', '.rev.1.bt2', '.rev.2.bt2'])
 
-    if args.bwa:        
+    if args.bwa:
         table = 'bwa_indexes'
         table_entries = get_table_entries(gi, table, args.dbkey, 1)
         if table_entries:
