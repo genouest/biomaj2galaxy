@@ -303,7 +303,7 @@ if __name__ == '__main__':
         params['dbkey_source|dbkey'] = args.dbkey
         params['dbkey_source|dbkey_name'] = default_name
         params['sequence_name'] = genome_fasta_names[args.genome_fasta]
-        params['full_genome'] = True
+        params['full_genome'] = 'true'
         params['reference_source|reference_source_selector'] = 'directory'
         params['reference_source|fasta_filename'] = args.genome_fasta
         params['reference_source|create_symlink'] = 'true'
@@ -333,7 +333,7 @@ if __name__ == '__main__':
             params['dbkey_source|dbkey_source_selector'] = 'existing'
             params['dbkey_source|dbkey'] = args.dbkey
             params['sequence_name'] = fasta_names[fasta]
-            params['full_genome'] = False
+            params['full_genome'] = 'false'
             params['reference_source|reference_source_selector'] = 'directory'
             params['reference_source|fasta_filename'] = fasta
             params['reference_source|create_symlink'] = 'true'
