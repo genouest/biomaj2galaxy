@@ -24,10 +24,10 @@ Gigascience. 2015 May 9;4:22. doi: 10.1186/s13742-015-0063-8. eCollection 2015.
 Licence
 =======
 
-Author: Anthony Bretaudeau <anthony.bretaudeau@rennes.inra.fr>
+Author: Anthony Bretaudeau <anthony.bretaudeau@inra.fr>
 
 This software is governed by the CeCILL license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 "http://www.cecill.info".
@@ -36,7 +36,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -45,9 +45,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -63,7 +63,7 @@ In most cases, you can install it easily with:
 
 The bioblend_contrib directory contains some code to extend the BioBlend library. This code has been merged to the official github repository, it will be available out of the box in the next stable release.
 
-A recent version of Galaxy is required: the last code changes were committed on 2015-01-26, any posterior stable version should work. 
+A recent version of Galaxy is required: the last code changes were committed on 2015-01-26, any posterior stable version should work.
 
 You need an API key to access your galaxy server. You need to use one from an admin account. The master API key defined in config/galaxy.ini doesn't work at the time of writing this doc (2014-10-13).
 
@@ -148,16 +148,16 @@ TODO
 ====
 
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
-    
+
     * Make it possible to use the future BioMAJ new REST API instead of using post processes
-    
+
     * Contribute code to bioblend: done, https://github.com/afgane/bioblend/pull/105
     * Trackster visualizations do not read genome list from data tables: done, PR #601
     * Wrong list in upload form: done, PR #601
-    
+
     * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22  and https://github.com/peterjc/galaxy_blast/issues/52 for more info)
     Until the wrappers are updated, you can manually modify the file ncbi_blast_plus/tools/ncbi_blast_plus/ncbi_macros.xml and replace the blocks that look like this:
-    
+
         <options from_file="blastdb.loc">
             <column name="value" index="0"/>
             <column name="name" index="1"/>
@@ -165,5 +165,5 @@ TODO
         </options>
 
     by this:
-    
+
         <options from_data_table="blastdb" />

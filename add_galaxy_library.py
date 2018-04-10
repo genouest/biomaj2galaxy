@@ -8,13 +8,16 @@
 ##
 
 ##
-# Author: Anthony Bretaudeau <anthony.bretaudeau@rennes.inra.fr>
+# Author: Anthony Bretaudeau <anthony.bretaudeau@inra.fr>
 ##
 
-from bioblend_contrib import galaxy
 import argparse
-import os, sys
 import configparser
+import os
+import sys
+
+from bioblend_contrib import galaxy
+
 
 def check_input(source, no_file_check):
     if not no_file_check:
@@ -22,13 +25,14 @@ def check_input(source, no_file_check):
         print("Checking input files, converting to absolute path")
         for f in source:
             if not os.path.isfile(f):
-                print >> sys.stderr, "ERROR: File '"+f+"' could not be read!"
+                print("ERROR: File '" + f + "' could not be read!", file=sys.stderr)
                 sys.exit(1)
             else:
                 formatted_source.append(os.path.abspath(f))
         return formatted_source
     else:
         return source
+
 
 def get_roles(gi, roles):
     """
@@ -42,32 +46,34 @@ def get_roles(gi, roles):
     ids = []
     for a in roles:
         if a not in all_remotes:
-            print >> sys.stderr, "ERROR: Could not find role '"+a+"'"
+            print("ERROR: Could not find role '" + a + "'", file=sys.stderr)
             sys.exit(1)
         else:
             ids.append(all_remotes[a])
 
     return ids
 
+
 def get_library(gi, lib_name, lib_desc, lib_synopsis):
     """
     Get the id corresponding to given library, and create it if it doesn't exist yet
     """
-    print("Looking for lib '"+lib_name+"'")
+    print("Looking for lib '" + lib_name + "'")
     libs = gi.libraries.get_libraries()
 
     found_lib = None
     for lib in libs:
-        if not found_lib and lib['name'] == lib_name and lib['deleted'] == False:
-            print("Found library '"+lib_name+"'")
+        if not found_lib and lib['name'] == lib_name and lib['deleted'] is False:
+            print("Found library '" + lib_name + "'")
             found_lib = lib['id']
 
     if not found_lib:
-        print("Did not find library '"+lib_name+"', creating it")
+        print("Did not find library '" + lib_name + "', creating it")
         create = gi.libraries.create_library(lib_name, lib_desc, lib_synopsis)
         found_lib = create['id']
 
     return found_lib
+
 
 def create_tree(gi, found_lib, folders):
     """
@@ -84,58 +90,61 @@ def create_tree(gi, found_lib, folders):
     last_f_id = None
     folder_to_create = []
     for f in folders:
-        path += "/"+f
+        path += "/" + f
         if path in dist_f:
-            print("Found folder "+f)
+            print("Found folder " + f)
             last_f_id = dist_f[path]['id']
         else:
-            print("Did not find folder "+f)
+            print("Did not find folder " + f)
             folder_to_create.append(f)
 
     if len(folder_to_create) > 0:
         for f in folder_to_create:
             if last_f_id:
-                print("Creating folder "+f+" in folder "+last_f_id)
+                print("Creating folder " + f + " in folder " + last_f_id)
                 f_c = gi.libraries.create_folder(found_lib, f, "", last_f_id)
             else:
-                print("Creating folder "+f+" in root folder")
+                print("Creating folder " + f + " in root folder")
                 f_c = gi.libraries.create_folder(found_lib, f, "")
             last_f_id = f_c[0]['id']
 
     return last_f_id
 
+
 def add_files(gi, lib, dest_folder, source, roles, file_type):
     for f in source:
-        gi.libraries.upload_from_galaxy_filesystem(lib, f, dest_folder, file_type, link_data_only = 'link_to_files')
+        gi.libraries.upload_from_galaxy_filesystem(lib, f, dest_folder, file_type, link_data_only='link_to_files')
         if roles:
             gi.libraries.set_library_permissions(lib, access_in=roles)
 
+
 def check_existing(gi, lib, dest, source, replace):
 
-    dest = "/"+"/".join(dest)
+    dest = "/" + "/".join(dest)
     files = []
     for f in source:
-        files.append(dest+"/"+os.path.basename(f))
+        files.append(dest + "/" + os.path.basename(f))
 
     libs = gi.libraries.show_library(lib, True)
     for e in libs:
         if e['type'] == 'file' and e['name'] in files:
             if replace:
-                print e['name']+" already present in the data library: replacing it"
+                print(e['name'] + " already present in the data library: replacing it")
                 gi.libraries.delete_library_dataset(lib, e['id'])
             else:
-                print e['name']+" already present in the data library: adding another copy"
+                print(e['name'] + " already present in the data library: adding another copy")
+
 
 def read_config(config_file):
 
     if not os.path.isfile(config_file):
-        print >> sys.stderr, "ERROR: File '"+config_file+"' could not be read!"
+        print("ERROR: File '" + config_file + "' could not be read!", file=sys.stderr)
         sys.exit(1)
 
     config = configparser.ConfigParser()
     config.read(config_file)
     if 'biomaj2galaxy' not in config:
-        print >> sys.stderr, "ERROR: File '"+config_file+"' is malformed!"
+        print("ERROR: File '" + config_file + "' is malformed!", file=sys.stderr)
         sys.exit(1)
 
     res = {}
@@ -150,9 +159,9 @@ def read_config(config_file):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument( '-c', '--config', help='Load options from config file')
-    parser.add_argument( '-u', '--url', help='Url of the galaxy instance')
-    parser.add_argument( '-k', '--api-key', help='Galaxy API key')
+    parser.add_argument('-c', '--config', help='Load options from config file')
+    parser.add_argument('-u', '--url', help='Url of the galaxy instance')
+    parser.add_argument('-k', '--api-key', help='Galaxy API key')
     parser.add_argument("-l", "--library", help="Data library where the data will be placed", required=True)
     parser.add_argument("-f", "--folder", help="Data library folder where the data will be placed (default=/)", default='/')
     parser.add_argument("-r", "--roles", help="Restrict acces to given group(s) (comma separated list). WARNING: the permission of the whole library is modified when using this option.")
@@ -166,7 +175,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not args.config and (not args.url or not args.api_key):
-        print >> sys.stderr, "ERROR: --config or --url and --api-key options are required."
+        print("ERROR: --config or --url and --api-key options are required.", file=sys.stderr)
         sys.exit(1)
 
     datatype = args.datatype
@@ -175,7 +184,7 @@ if __name__ == '__main__':
 
     source = check_input(args.source, args.no_file_check)
 
-    print("Using galaxy instance '"+args.url+"' with api key '"+args.api_key+"'")
+    print("Using galaxy instance '" + args.url + "' with api key '" + args.api_key + "'")
 
     config = {}
     if args.config:
@@ -183,7 +192,7 @@ if __name__ == '__main__':
 
     if "url" not in config:
         if not args.url:
-            print >> sys.stderr, "ERROR: you must configure the galaxy server url (-c or -u option)"
+            print("ERROR: you must configure the galaxy server url (-c or -u option)", file=sys.stderr)
             sys.exit(1)
         config['url'] = args.url
 
@@ -192,7 +201,7 @@ if __name__ == '__main__':
 
     if "apikey" not in config:
         if not args.api_key:
-            print >> sys.stderr, "ERROR: you must configure the galaxy server api key (-c or -k option)"
+            print("ERROR: you must configure the galaxy server api key (-c or -k option)", file=sys.stderr)
             sys.exit(1)
         config['apikey'] = args.api_key
 
@@ -204,22 +213,22 @@ if __name__ == '__main__':
         print("Checking roles")
         r_roles = get_roles(gi, roles)
 
-    print("Adding to data library '"+str(args.library)+"'")
+    print("Adding to data library '" + str(args.library) + "'")
 
     if not args.folder:
         args.folder = '/'
     dest = os.path.normpath(args.folder)
     dest = dest.split(os.sep)
-    dest = [x for x in dest if x] # Remove empty string when sep at the begin or end, or multiple sep
+    dest = [x for x in dest if x]  # Remove empty string when sep at the begin or end, or multiple sep
 
     found_lib = get_library(gi, args.library, args.lib_desc, args.lib_synopsis)
 
-    print("Preparing folders in library '"+args.library+"'")
+    print("Preparing folders in library '" + args.library + "'")
     dest_folder = create_tree(gi, found_lib, dest)
 
     check_existing(gi, found_lib, dest, source, args.replace)
 
-    print("Adding "+str(len(source))+" file(s) to the library '"+args.library+"'")
+    print("Adding " + str(len(source)) + " file(s) to the library '" + args.library + "'")
     add_files(gi, found_lib, dest_folder, source, r_roles, datatype)
 
-    print "Done!"
+    print("Done!")
