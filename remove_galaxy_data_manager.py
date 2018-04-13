@@ -16,7 +16,7 @@ import configparser
 import os
 import sys
 
-from bioblend_contrib import galaxy
+from bioblend import galaxy
 
 
 def get_table_entries(gi, table, entry_id, field=0, starting=False):
@@ -133,7 +133,7 @@ if __name__ == '__main__':
             sys.exit(1)
         config['apikey'] = args.api_key
 
-    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
+    gi = galaxy.GalaxyInstance(url=config['url'], key=config['apikey'])
 
     # Always delete from the __dbkeys__ table
     table = '__dbkeys__'

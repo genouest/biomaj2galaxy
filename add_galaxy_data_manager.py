@@ -18,7 +18,7 @@ import sys
 import time
 import uuid
 
-from bioblend_contrib import galaxy
+from bioblend import galaxy
 
 
 ADD_DBKEY_TOOL_ID = 'toolshed.genouest.org/repos/abretaud/data_manager_dbkeys/data_manager_dbkey/0.0.1'  # This only creates a dbkey without any data associated to it
@@ -57,9 +57,9 @@ def wait_completion(gi, fetch_res, args, sleep_time, exit_on_error=True):
     if exit_on_error and status == 'error':
         print >> sys.stderr, "ERROR: Job finished in error state! Aborting"
         print >> sys.stderr, "STDOUT content:"
-        print >> sys.stderr, gi.datasets.show_stdout(dataset_id)
+        print >> sys.stderr, gi.datasets.show_stdout(dataset_id)  # FIXME deprecated https://github.com/galaxyproject/bioblend/blob/master/bioblend/galaxy/datasets/__init__.py#L175
         print >> sys.stderr, "STDERR content:"
-        print >> sys.stderr, gi.datasets.show_stderr(dataset_id)
+        print >> sys.stderr, gi.datasets.show_stderr(dataset_id)  # FIXME deprecated https://github.com/galaxyproject/bioblend/blob/master/bioblend/galaxy/datasets/__init__.py#L175
         sys.exit(1)
 
 
@@ -264,7 +264,7 @@ if __name__ == '__main__':
             sys.exit(1)
         config['apikey'] = args.api_key
 
-    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
+    gi = galaxy.GalaxyInstance(url=config['url'], key=config['apikey'])
 
     dbkey_entry = get_dbkey_entry(gi, args.dbkey)
     has_dbkey = dbkey_entry is not None

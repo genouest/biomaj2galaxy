@@ -55,13 +55,11 @@ knowledge of the CeCILL license and that you accept its terms.
 Requirements
 ============
 
-These script requires the BioBlend (https://github.com/afgane/bioblend) python library to interact with Galaxy server.
+These script requires the BioBlend (https://github.com/galaxyproject/bioblend) python library to interact with Galaxy server.
 
 In most cases, you can install it easily with:
 
     pip install bioblend
-
-The bioblend_contrib directory contains some code to extend the BioBlend library. This code has been merged to the official github repository, it will be available out of the box in the next stable release.
 
 A recent version of Galaxy is required: the last code changes were committed on 2015-01-26, any posterior stable version should work.
 
@@ -150,10 +148,6 @@ TODO
     * There is no way yet to remove from disk multi-volume blast databanks when using remove_galaxy_data_manager.py
 
     * Make it possible to use the future BioMAJ new REST API instead of using post processes
-
-    * Contribute code to bioblend: done, https://github.com/afgane/bioblend/pull/105
-    * Trackster visualizations do not read genome list from data tables: done, PR #601
-    * Wrong list in upload form: done, PR #601
 
     * The blastdb and blastdb_p data tables are not currently used by the blast+ tools from the following repository: http://toolshed.g2.bx.psu.edu/view/devteam/ncbi_blast_plus (See https://github.com/peterjc/galaxy_blast/issues/22  and https://github.com/peterjc/galaxy_blast/issues/52 for more info)
     Until the wrappers are updated, you can manually modify the file ncbi_blast_plus/tools/ncbi_blast_plus/ncbi_macros.xml and replace the blocks that look like this:

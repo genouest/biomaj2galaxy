@@ -16,7 +16,7 @@ import configparser
 import os
 import sys
 
-from bioblend_contrib import galaxy
+from bioblend import galaxy
 
 
 def check_input(source, no_file_check):
@@ -205,7 +205,7 @@ if __name__ == '__main__':
             sys.exit(1)
         config['apikey'] = args.api_key
 
-    gi = galaxy.GalaxyContribInstance(url=config['url'], key=config['apikey'])
+    gi = galaxy.GalaxyInstance(url=config['url'], key=config['apikey'])
 
     r_roles = []
     if args.roles:
