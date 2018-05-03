@@ -1,5 +1,7 @@
 # BioMAJ2Galaxy
 
+[![Build](https://travis-ci.org/genouest/biomaj2galaxy.svg?branch=master)](https://travis-ci.org/genouest/biomaj2galaxy)
+
 ## About
 
 With this python module you can perform the following actions on a Galaxy server:
