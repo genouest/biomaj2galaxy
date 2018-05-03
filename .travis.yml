@@ -22,7 +22,7 @@ jobs:
         - export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
         - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ bgruening/galaxy-stable)
         - sleep 180 # Wait for the container to be ready
-        - docker exec -it $GAL_DOCKER install-tools /test-data/tools.yml
+        - docker exec -it $GAL_DOCKER install-tools /data/tools.yml
       script:
         - python setup.py nosetests
     - stage: test
@@ -33,7 +33,7 @@ jobs:
         - export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
         - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ bgruening/galaxy-stable)
         - sleep 180 # Wait for the container to be ready
-        - docker exec -it $GAL_DOCKER install-tools /test-data/tools.yml
+        - docker exec -it $GAL_DOCKER install-tools /data/tools.yml
       script:
         - python setup.py nosetests
     - stage: deploy
