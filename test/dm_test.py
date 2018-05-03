@@ -3,7 +3,9 @@ import os
 import unittest
 
 from biomaj2galaxy.cli import biomaj2galaxy
+
 from click.testing import CliRunner
+
 from . import gi
 
 
