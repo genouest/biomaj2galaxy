@@ -1,7 +1,7 @@
+import time
+
 from biomaj2galaxy import pass_context
 import click
-
-click.disable_unicode_literals_warning = True
 
 
 @click.command()
@@ -75,6 +75,7 @@ def rm(ctx, dbkey, tables, exact):
                 ctx.gi.tool_data.delete_data_table(table, "\t".join(line))
 
     # Reload all tables just in case
+    time.sleep(1)  # Reloading too soon might not work for some strange reason
     print("Reloading tables")
     for table in tables_to_clean:
         ctx.gi.tool_data.reload_data_table(table)

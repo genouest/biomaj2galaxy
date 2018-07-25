@@ -1,4 +1,5 @@
 import os
+import time
 import uuid
 
 from biomaj2galaxy import pass_context
@@ -242,6 +243,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
     wait_completion(ctx.gi, fetch_res['outputs'][0]['id'])
 
     # Reload all tables just in case
+    time.sleep(1)  # Reloading too soon might not work for some strange reason
     for table in table_counts:
         print("Reloading table '%s'" % table)
         ctx.gi.tool_data.reload_data_table(table)

@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 import unittest
 
 from biomaj2galaxy.cli import biomaj2galaxy
@@ -31,13 +32,13 @@ class DmTest(unittest.TestCase):
         runner = CliRunner()
         runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', 'bowtie2:/some/path/foo/bar'], catch_exceptions=False)
 
-        dbkeys = self.gi.tool_data.show_data_table('__dbkeys__')
-        dbkeys = dbkeys['fields']
-        assert [new_dbkey, new_dbkey_name, ''] in dbkeys
-
         bowtie2 = self.gi.tool_data.show_data_table('bowtie2_indexes')
         bowtie2 = bowtie2['fields']
         assert [new_dbkey, new_dbkey, new_dbkey_name, '/some/path/foo/bar'] in bowtie2
+
+        dbkeys = self.gi.tool_data.show_data_table('__dbkeys__')
+        dbkeys = dbkeys['fields']
+        assert [new_dbkey, new_dbkey_name, ''] in dbkeys
 
     def test_add_bowtie2_multiple(self):
 
@@ -275,6 +276,7 @@ class DmTest(unittest.TestCase):
                 fields = self.gi.tool_data.show_data_table(table)['fields']
                 for line in fields:
                     self.gi.tool_data.delete_data_table(table, "\t".join(line))
+                time.sleep(1)  # Reloading too soon might not work for some strange reason
                 self.gi.tool_data.reload_data_table(table)
 
     def tearDown(self):
@@ -293,4 +295,5 @@ class DmTest(unittest.TestCase):
                 fields = self.gi.tool_data.show_data_table(table)['fields']
                 for line in fields:
                     self.gi.tool_data.delete_data_table(table, "\t".join(line))
+                time.sleep(1)  # Reloading too soon might not work for some strange reason
                 self.gi.tool_data.reload_data_table(table)
