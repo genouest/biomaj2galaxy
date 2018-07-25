@@ -10,8 +10,6 @@ from .commands.rm_lib import rm_lib as func3
 
 from .config import get_instance, global_config_path, set_global_config_path
 
-click.disable_unicode_literals_warning = True
-
 
 @click.group()
 @click.version_option(__version__)

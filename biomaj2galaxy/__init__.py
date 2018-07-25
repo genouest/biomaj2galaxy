@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 import sys
@@ -18,7 +17,6 @@ __version__ = '2.0'
 
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix='BM2G', help_option_names=['-h', '--help'])
-click.disable_unicode_literals_warning = True
 
 
 class Context(object):

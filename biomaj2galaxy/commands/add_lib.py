@@ -1,15 +1,12 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 
 from biomaj2galaxy import pass_context
 from biomaj2galaxy.utils import add_files, check_existing, check_input, create_tree, get_library, get_roles
 import click
-
-click.disable_unicode_literals_warning = True
 
 
 @click.command()

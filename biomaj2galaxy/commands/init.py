@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 
@@ -11,8 +10,6 @@ from biomaj2galaxy import config, pass_context
 from biomaj2galaxy.io import info, warn
 import click
 
-
-click.disable_unicode_literals_warning = True
 
 CONFIG_TEMPLATE = """## BioMAJ2Galaxy: Global Configuration File.
 # Each stanza should contain a single Galaxy server to interact with.

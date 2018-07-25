@@ -6,8 +6,6 @@ from biomaj2galaxy.io import warn
 from biomaj2galaxy.utils import check_input, get_dbkey_entry, wait_completion
 import click
 
-click.disable_unicode_literals_warning = True
-
 
 @click.command()
 @click.argument("files", nargs=-1)

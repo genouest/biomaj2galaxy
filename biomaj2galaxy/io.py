@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 import click
 
-click.disable_unicode_literals_warning = True
-
 
 def info(message, *args):
     if args:
