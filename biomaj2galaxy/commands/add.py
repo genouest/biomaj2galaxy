@@ -78,6 +78,11 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
     for t in tables:
         tables_format[t['name']] = ctx.gi.tool_data.show_data_table(t['name'])['columns']
 
+        # A stupid fix for the twobit table which for some unknown reason doesn't have a 'name' column_name
+        # As this 'name' column is required for a data table, the galaxy code adds a non-existing one when it is not found in the table defintion.
+        if t['name'] == 'twobit' and 'name' in tables_format[t['name']]:
+            tables_format[t['name']].remove('name')
+
     # Define some simpler synonyms for data tables
     data_table_synonyms = {
         'fasta': 'all_fasta',
