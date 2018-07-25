@@ -6,26 +6,26 @@
 
 With this python module you can perform the following actions on a Galaxy server:
 
-    * Add new items to data libraries
-    * Remove items from data libraries
-    * Add new items to tool data tables using data managers
-    * Remove items from tool data tables
+* Add new items to data libraries
+* Remove items from data libraries
+* Add new items to tool data tables using data managers
+* Remove items from tool data tables
 
 These scripts are primarily designed to be used as BioMAJ (http://biomaj.genouest.org) post processes,
 but they can probably used directly from the command line if you need to.
 
 This work has been published in GigaScience:
 
-BioMAJ2Galaxy: automatic update of reference data in Galaxy using BioMAJ.
+[BioMAJ2Galaxy: automatic update of reference data in Galaxy using BioMAJ.
 Bretaudeau A, Monjeaud C, Le Bras Y, Legeai F, Collin O.
-Gigascience. 2015 May 9;4:22. doi: 10.1186/s13742-015-0063-8. eCollection 2015.
+Gigascience. 2015 May 9;4:22. doi: 10.1186/s13742-015-0063-8. eCollection 2015.](https://dx.doi.org/10.1186%2Fs13742-015-0063-8)
 
 ## Installation
 
 In most cases, you can install it easily with:
 
 ```bash
-pip install biomaj2galaxy
+$ pip install biomaj2galaxy
 
 # On first use you'll need to create a config file to connect to the Galaxy server, just run:
 $ biomaj2galaxy init
@@ -36,7 +36,7 @@ apikey: your-api-key
 
 You need an API key to access your galaxy server. You need to use one from an admin account.
 
-allow_library_path_paste should be set in config/galaxy.ini (or config/galaxy.yml)
+`allow_library_path_paste` should be set in `config/galaxy.yml` (or `config/galaxy.ini` for older versions)
 
 Finally, if you want to add or remove items from tool data tables, you will need to install two data managers from the ToolShed:
 
