@@ -14,7 +14,7 @@ import click
 )
 @pass_context
 def rm(ctx, dbkey, tables, exact):
-    """Remove data from Galaxy data tables, where DBKEY is the id of the data to remove, and TABLES is an optional list of tables to remove data from (by default , data will be removed in all tables)."""
+    """Remove data from Galaxy data tables, where DBKEY is the id of the data to remove, and TABLES is an optional list of tables to remove data from (by default, data will be removed in all tables)."""
 
     # Define some simpler synonyms for data tables
     data_table_synonyms = {

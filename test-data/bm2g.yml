@@ -3,4 +3,3 @@ __default: local
 local:
     url: "http://localhost:8080/"
     apikey: "admin"
-    #apikey: "HSNiugRFvgT574F43jZ7N9F3"
