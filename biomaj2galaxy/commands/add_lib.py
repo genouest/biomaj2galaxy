@@ -12,11 +12,13 @@ import click
 @click.command()
 @click.argument("sources", nargs=-1, type=click.Path())
 @click.option(
+    "-l",
     "--library",
     help="Name of the destination library (default=guessed from BioMAJ bank name, ie $dbname env var)",
     type=str
 )
 @click.option(
+    "-f",
     "--folder",
     help="Data library folder where the data will be placed (default=/)",
     default="/",

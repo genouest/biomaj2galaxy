@@ -56,8 +56,8 @@ GALAXY=galaxy_dm
 galaxy_dm.name=galaxy_dm
 galaxy_dm.desc=Add files to Galaxy tool data tables
 galaxy_dm.type=galaxy
-galaxy_dm.exe=add_galaxy_data_manager.py
-galaxy_dm.args=-d "${localrelease}" -n "Homo sapiens (${remoterelease})" -g fasta/all.fa --bowtie2 bowtie/all --blastn blast/Homo_sapiens-ncbi_testing
+galaxy_dm.exe=biomaj2galaxy
+galaxy_dm.args=add -d "${localrelease}" -g fasta/all.fa bowtie2:bowtie2/all "blastdb:blast/Homo_sapiens-proteins:Homo sapiens proteins"
 
 db.remove.process=RM_GALAXY
 RM_GALAXY=rm_galaxy_dm
@@ -65,8 +65,8 @@ RM_GALAXY=rm_galaxy_dm
 rm_galaxy_dm.name=rm_galaxy_dm
 rm_galaxy_dm.desc=Remove from Galaxy tool data tables
 rm_galaxy_dm.type=galaxy
-rm_galaxy_dm.exe=remove_galaxy_data_manager.py
-rm_galaxy_dm.args="${db.name}-${removedrelease}" blastdb bowtie2_indexes
+rm_galaxy_dm.exe=biomaj2galaxy
+rm_galaxy_dm.args=rm "${db.name}-${removedrelease}"
 ```
 
 And the same using data libraries:
@@ -78,8 +78,8 @@ GALAXY=galaxy_dl
 galaxy_dl.name=galaxy_dl
 galaxy_dl.desc=Add files to Galaxy data libraries
 galaxy_dl.type=galaxy
-galaxy_dl.exe=add_galaxy_library.py
-galaxy_dl.args=-l "Homo sapiens genome (${remoterelease})" --lib-desc "Genome of Homo sapiens (version ${remoterelease}) downloaded from NCBI" -f "${localrelease}" --replace fasta/all.fa
+galaxy_dl.exe=biomaj2galaxy
+galaxy_dl.args=add_lib -l "Homo sapiens genome (${remoterelease})" --lib-desc "Genome of Homo sapiens (version ${remoterelease}) downloaded from NCBI" -f "${localrelease}" --replace fasta/all.fa
 
 db.remove.process=RM_GALAXY
 RM_GALAXY=rm_galaxy_dl
@@ -87,8 +87,8 @@ RM_GALAXY=rm_galaxy_dl
 rm_galaxy_dl.name=rm_galaxy_dl
 rm_galaxy_dl.desc=Remove from Galaxy data libraries
 rm_galaxy_dl.type=galaxy
-rm_galaxy_dl.exe=remove_galaxy_library.py
-rm_galaxy_dl.args=-l "Homo sapiens genome (${remote.release})" -f "${db.name}-${removedrelease}"
+rm_galaxy_dl.exe=biomaj2galaxy
+rm_galaxy_dl.args=rm_lib -f "${db.name}-${removedrelease}" "Homo sapiens genome (${remote.release})"
 ```
 
 By default, relative file paths will be interpreted as relative to `${data.dir}/${dir.version}/${localrelease}` if these envionment variables are set. This can be disabled by using the --no-biomaj-env option.

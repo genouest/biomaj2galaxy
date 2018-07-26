@@ -12,6 +12,7 @@ import click
 @click.command()
 @click.argument("library", nargs=1)
 @click.option(
+    "-f",
     "--folder",
     help="Data library folder to remove (default=remove the whole library)",
     type=str
