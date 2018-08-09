@@ -36,7 +36,7 @@ def check_input(sources, check_existence=True, use_biomaj_env=True):
         else:
             abs_path = os.path.abspath(f)
 
-        if check_existence and not os.path.isfile(f):
+        if check_existence and not os.path.isfile(abs_path):
             raise Exception("File '" + f + "' could not be read!")
 
         formatted_source.append(abs_path)
