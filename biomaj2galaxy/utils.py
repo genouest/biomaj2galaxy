@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import fnmatch
 import os
 import sys
 import time
@@ -27,6 +28,14 @@ def get_roles(gi, roles):
     return ids
 
 
+def isfile_wo_ext(path):
+    """Checks that a file exists, or exists with any extension"""
+    path_dir = os.path.dirname(path)
+    path_fn = os.path.basename(path)
+
+    return os.path.isfile(path) or len(fnmatch.filter(os.listdir(path_dir), path_fn + '.*')) > 0
+
+
 def check_input(sources, check_existence=True, use_biomaj_env=True):
     formatted_source = []
     print("Checking input files, converting to absolute path")
@@ -36,7 +45,7 @@ def check_input(sources, check_existence=True, use_biomaj_env=True):
         else:
             abs_path = os.path.abspath(f)
 
-        if check_existence and not os.path.isfile(abs_path):
+        if check_existence and not isfile_wo_ext(abs_path):
             raise Exception("File '" + abs_path + "' could not be read!")
 
         formatted_source.append(abs_path)
