@@ -174,15 +174,18 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
 
         if not genome_fasta_name:
             genome_fasta_name = default_name
+
+        genome_fasta_abs = check_input([genome_fasta], check_existence=(not no_file_check), use_biomaj_env=(not no_biomaj_env))[0]
+
         # the dbkey is not (or not longer) existing: create it while adding the ref genome to force the computing of the len file
-        print("Adding a new genome using fasta file '%s' -> '%s'" % (genome_fasta_name, genome_fasta))
+        print("Adding a new genome using fasta file '%s' -> '%s'" % (genome_fasta_name, genome_fasta_abs))
         params = {}
         params['dbkey_source|dbkey_source_selector'] = 'new'
         params['dbkey_source|dbkey'] = dbkey
         params['dbkey_source|dbkey_name'] = default_name
         params['sequence_name'] = genome_fasta_name
         params['reference_source|reference_source_selector'] = 'directory'
-        params['reference_source|fasta_filename'] = genome_fasta
+        params['reference_source|fasta_filename'] = genome_fasta_abs
         params['reference_source|create_symlink'] = 'true'
         params['sorting|sort_selector'] = fasta_sorting_method
         if fasta_sorting_method == 'custom':

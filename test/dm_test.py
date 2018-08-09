@@ -40,6 +40,22 @@ class DmTest(unittest.TestCase):
         dbkeys = dbkeys['fields']
         assert [new_dbkey, new_dbkey_name, ''] in dbkeys
 
+    def test_add_genome(self):
+
+        new_dbkey = 'test_dbkey'
+        new_dbkey_name = 'My cool dbkey'
+
+        runner = CliRunner()
+        runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', '-g', '/data/sample.fasta'], catch_exceptions=False)
+
+        fasta = self.gi.tool_data.show_data_table('all_fasta')
+        fasta = fasta['fields']
+        assert [new_dbkey, new_dbkey, new_dbkey_name, '/galaxy-central/tool-data/test_dbkey/seq/test_dbkey.fa'] in fasta
+
+        dbkeys = self.gi.tool_data.show_data_table('__dbkeys__')
+        dbkeys = dbkeys['fields']
+        assert [new_dbkey, new_dbkey_name, '/galaxy-central/tool-data/test_dbkey/len/test_dbkey.len'] in dbkeys
+
     def test_add_bowtie2_multiple(self):
 
         new_dbkey = 'test_dbkey'
@@ -269,6 +285,7 @@ class DmTest(unittest.TestCase):
             '__dbkeys__',
             'rnastar_index2',
             'bwa_indexes',
+            'all_fasta'
         ]
         tables = [x['name'] for x in self.gi.tool_data.get_data_tables()]
         for table in tables:
@@ -288,6 +305,7 @@ class DmTest(unittest.TestCase):
             '__dbkeys__',
             'rnastar_index2',
             'bwa_indexes',
+            'all_fasta'
         ]
         tables = [x['name'] for x in self.gi.tool_data.get_data_tables()]
         for table in tables:
