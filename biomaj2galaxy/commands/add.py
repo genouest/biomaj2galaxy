@@ -102,7 +102,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         f_info = [x.replace('___colon___', ':') for x in f_info]
 
         if len(f_info) < 2 or len(f_info) > 3:
-            raise Exception('Malformed file information "%s"' % f)
+            raise Exception('Malformed file information "%s"' % f_info)
 
         if f_info[0] not in tables_format:
             if f_info[0] in data_table_synonyms:
