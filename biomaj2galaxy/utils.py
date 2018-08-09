@@ -38,7 +38,7 @@ def isfile_wo_ext(path):
 
 def check_input(sources, check_existence=True, use_biomaj_env=True):
     formatted_source = []
-    print("Checking input files, converting to absolute path: %s" % formatted_source)
+    print("Checking input files, converting to absolute path: %s" % sources)
     for f in sources:
         if use_biomaj_env and not f.startswith('/') and 'data.dir' in os.environ and 'dirversion' in os.environ and 'localrelease' in os.environ:
             abs_path = os.path.join(os.environ['data.dir'], os.environ['dirversion'], os.environ['localrelease'], f)
