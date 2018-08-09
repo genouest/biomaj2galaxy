@@ -31,12 +31,15 @@ def check_input(sources, check_existence=True, use_biomaj_env=True):
     formatted_source = []
     print("Checking input files, converting to absolute path")
     for f in sources:
+        if use_biomaj_env and not f.startswith('/') and 'data.dir' in os.environ and 'dirversion' in os.environ and 'localrelease' in os.environ:
+            abs_path = os.path.join(os.environ['data.dir'], os.environ['dirversion'], os.environ['localrelease'], f)
+        else:
+            abs_path = os.path.abspath(f)
+
         if check_existence and not os.path.isfile(f):
             raise Exception("File '" + f + "' could not be read!")
-        elif use_biomaj_env and not f.startswith('/') and 'data.dir' in os.environ and 'dirversion' in os.environ and 'localrelease' in os.environ:
-            formatted_source.append(os.path.join(os.environ['data.dir'], os.environ['dirversion'], os.environ['localrelease'], f))
-        else:
-            formatted_source.append(os.path.abspath(f))
+
+        formatted_source.append(abs_path)
     return formatted_source
 
 
