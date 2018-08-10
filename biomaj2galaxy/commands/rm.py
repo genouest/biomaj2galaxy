@@ -70,9 +70,10 @@ def rm(ctx, dbkey, tables, exact):
             continue
 
         for line in tables_entries[table]:
-            if (exact and line[dbkey_field] == dbkey) or (not exact and line[dbkey_field].startswith(dbkey)):
-                print("Deleting from '" + table + "' table")
-                ctx.gi.tool_data.delete_data_table(table, "\t".join(line))
+            if len(line) > dbkey_field:  # Sometimes Galaxy is lying (featurecounts_anno table)
+                if (exact and line[dbkey_field] == dbkey) or (not exact and line[dbkey_field].startswith(dbkey)):
+                    print("Deleting from '" + table + "' table")
+                    ctx.gi.tool_data.delete_data_table(table, "\t".join(line))
 
     # Reload all tables just in case
     time.sleep(1)  # Reloading too soon might not work for some strange reason
