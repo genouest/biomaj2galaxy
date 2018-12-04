@@ -204,8 +204,6 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
 
     # Now add all associated data
     manual_dm_params = {}
-    manual_dm_params['data_tables'] = []
-    manual_dm_params['directory_content'] = []
     index_entry = 0
     for f_info in files_info:
 
