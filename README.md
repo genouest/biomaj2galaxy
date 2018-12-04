@@ -92,3 +92,12 @@ rm_galaxy_dl.args=rm_lib -f "${db.name}-${removedrelease}" "Homo sapiens genome 
 ```
 
 By default, relative file paths will be interpreted as relative to `${data.dir}/${dir.version}/${localrelease}` if these envionment variables are set. This can be disabled by using the --no-biomaj-env option.
+
+## Changes
+
+- 2.0.1
+    - Fixed error with Galaxy 18.09 (also fixed in Galaxy: https://github.com/galaxyproject/galaxy/issues/7048)
+    - Fixed error while waiting for job completion
+
+- 2.0
+    - Complete rewrite using data_manager_manual
