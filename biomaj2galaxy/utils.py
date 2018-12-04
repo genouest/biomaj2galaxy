@@ -172,6 +172,7 @@ def wait_completion(gi, job_id, sleep_time=30, exit_on_error=True):
     error_number = 0
     sleep_time = 10  # Don't wait too much for first try
 
+    dataset_info = []
     while True:
         # What's the status of the running job?
         try:
@@ -185,7 +186,7 @@ def wait_completion(gi, job_id, sleep_time=30, exit_on_error=True):
                 raise Exception('Could not connect to the Galaxy server for too long, giving up.')
 
         # Finished!
-        if dataset_info['state'] in ['ok', 'error']:
+        if dataset_info and 'state' in dataset_info and dataset_info['state'] in ['ok', 'error']:
             break
 
         # Not finished yet, wait a little
