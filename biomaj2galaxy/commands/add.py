@@ -62,16 +62,21 @@ import click
     is_flag=True
 )
 @click.option(
+    "--star-version",
+    help="Version of STAR used to create the index (default: none)",
+    type=str
+)
+@click.option(
     "--no-biomaj-env",
     help="Add this flag if you don't want biomaj2galaxy to use BioMAJ env variables to guess file names.",
     is_flag=True
 )
 @pass_context
-def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, fasta_sorting_method, fasta_custom_sort_list, fasta_custom_sort_handling, no_file_check, star_with_gtf, no_biomaj_env):
+def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, fasta_sorting_method, fasta_custom_sort_list, fasta_custom_sort_handling, no_file_check, star_with_gtf, star_version, no_biomaj_env):
     """Add data to a Galaxy data table. FILES is a list of path respecting this syntax: data_table_name:/path/to/data:Data name (e.g. "bowtie2:/db/some/where/my_genome:My supercool genome"). You can escape ':' by writing '\:'"""
 
-    ADD_FASTA_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.2'
-    DM_MANUAL_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/iuc/data_manager_manual/data_manager_manual/0.0.1'
+    ADD_FASTA_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.3'
+    DM_MANUAL_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/iuc/data_manager_manual/data_manager_manual/0.0.2'
 
     # Fetch the list of known tables with their columns
     tables_format = {}
@@ -92,7 +97,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         'bwa': 'bwa_indexes',
         'bwa_mem': 'bwa_mem_indexes',
         'tophat2': 'tophat2_indexes',
-        'star': 'rnastar_index2',
+        'star': 'rnastar_index2_versioned',
     }
 
     files_info = []
@@ -218,7 +223,9 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
             'path': f_info['path'] if 'path' in f_info else '',
             'db_path': f_info['path'] if 'path' in f_info else '',  # diamond data table
             'url': f_info['path'] if 'path' in f_info else '',
-            'with-gtf': '1' if star_with_gtf else '0',  # rnastar data table
+            'with-gtf': '1' if star_with_gtf else '0',  # rnastar data table, old data table
+            'with_gene_model': '1' if star_with_gtf else '0',  # rnastar data table, recent data table
+            'version': star_version if star_version else '0',  # rnastar data table, recent data table
             'len_path': f_info['path'] if 'path' in f_info else '',  # __dbkeys__data table
         }
 

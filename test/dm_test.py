@@ -120,9 +120,9 @@ class DmTest(unittest.TestCase):
         twobit = twobit['fields']
         assert [new_dbkey, '/foo/really/foo/bar'] in twobit
 
-        star = self.gi.tool_data.show_data_table('rnastar_index2')
+        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
         star = star['fields']
-        assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '0'] in star
+        assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '0', '0'] in star
 
         fasta = self.gi.tool_data.show_data_table('all_fasta')
         fasta = fasta['fields']
@@ -136,9 +136,21 @@ class DmTest(unittest.TestCase):
         runner = CliRunner()
         runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', 'star:/foo/bloup/test/faa/bor:Wixxxtoo!', '--star-with-gtf'], catch_exceptions=False)
 
-        star = self.gi.tool_data.show_data_table('rnastar_index2')
+        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
         star = star['fields']
-        assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '1'] in star
+        assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '1', '0'] in star
+
+    def test_add_star_gtf_version(self):
+
+        new_dbkey = 'test_dbkey'
+        new_dbkey_name = 'My cool dbkey'
+
+        runner = CliRunner()
+        runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', 'star:/foo/bloup/test/faa/bor:Wixxxtoo!', '--star-with-gtf', '--star-version', '1.7.6'], catch_exceptions=False)
+
+        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
+        star = star['fields']
+        assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '1', '1.7.6'] in star
 
     def test_add_biomaj_env(self):
 
@@ -283,7 +295,7 @@ class DmTest(unittest.TestCase):
             'blastdb',
             'twobit',
             '__dbkeys__',
-            'rnastar_index2',
+            'rnastar_index2_versioned',
             'bwa_indexes',
             'all_fasta'
         ]
@@ -303,7 +315,7 @@ class DmTest(unittest.TestCase):
             'blastdb',
             'twobit',
             '__dbkeys__',
-            'rnastar_index2',
+            'rnastar_index2_versioned',
             'bwa_indexes',
             'all_fasta'
         ]
