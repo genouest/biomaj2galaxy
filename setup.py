@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="biomaj2galaxy",
-    version='2.0.1',
+    version='2.1',
     description="Command-line utility to assist in interconnecting BioMAJ (https://biomaj.genouest.org/) with Galaxy (http://galaxyproject.org/).",
     author="Anthony Bretaudeau",
     author_email="anthony.bretaudeau@inra.fr",

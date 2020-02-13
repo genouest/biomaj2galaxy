@@ -96,7 +96,7 @@ By default, relative file paths will be interpreted as relative to `${data.dir}/
 ## Changes
 
 - 2.1.0
-    - Fixed error with Galaxy 19.05 (also fixes in Galaxy: https://github.com/galaxyproject/galaxy/issues/8792 and in IUC: https://github.com/galaxyproject/tools-iuc/pull/2634)
+    - Fixed errors with Galaxy >19.05 (also fixes in Galaxy: https://github.com/galaxyproject/galaxy/issues/8792 and in IUC: https://github.com/galaxyproject/tools-iuc/pull/2634)
 
 - 2.0.1
     - Fixed error with Galaxy 18.09 (also fixed in Galaxy: https://github.com/galaxyproject/galaxy/issues/7048)
