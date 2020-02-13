@@ -75,7 +75,7 @@ import click
 def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, fasta_sorting_method, fasta_custom_sort_list, fasta_custom_sort_handling, no_file_check, star_with_gtf, star_version, no_biomaj_env):
     """Add data to a Galaxy data table. FILES is a list of path respecting this syntax: data_table_name:/path/to/data:Data name (e.g. "bowtie2:/db/some/where/my_genome:My supercool genome"). You can escape ':' by writing '\:'"""
 
-    ADD_FASTA_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.3'
+    ADD_FASTA_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.4'
     DM_MANUAL_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/iuc/data_manager_manual/data_manager_manual/0.0.2'
 
     # Fetch the list of known tables with their columns
