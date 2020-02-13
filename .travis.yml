@@ -20,7 +20,7 @@ jobs:
         - pip install -U pip setuptools nose
         - python setup.py install
         - export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
-        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.05.1)
+        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.09)
         - sleep 180 # Wait for the container to be ready
         - docker exec -i $GAL_DOCKER install-tools /data/tools.yml
         - "docker exec -i $GAL_DOCKER supervisorctl restart galaxy:"
@@ -34,7 +34,7 @@ jobs:
         - pip install -U pip setuptools nose
         - python setup.py install
         - export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
-        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.05.1)
+        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.09)
         - sleep 180 # Wait for the container to be ready
         - docker exec -i $GAL_DOCKER install-tools /data/tools.yml
         - "docker exec -i $GAL_DOCKER supervisorctl restart galaxy:"
@@ -48,7 +48,7 @@ jobs:
         - pip install -U pip setuptools nose
         - python setup.py install
         - export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
-        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.05.1)
+        - GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:19.09)
         - sleep 180 # Wait for the container to be ready
         - docker exec -i $GAL_DOCKER install-tools /data/tools.yml
         - "docker exec -i $GAL_DOCKER supervisorctl restart galaxy:"
