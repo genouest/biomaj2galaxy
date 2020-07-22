@@ -13,7 +13,7 @@ jobs:
       install:
         - pip install -U flake8 flake8-import-order
       script:
-        - flake8 tripal test --ignore=E501
+        - flake8 biomaj2galaxy test --ignore=E501
     - stage: test
       python: '2.7'
       install:
