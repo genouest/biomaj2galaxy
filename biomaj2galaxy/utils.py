@@ -8,6 +8,7 @@ import sys
 import time
 
 from bioblend import ConnectionError
+
 from biomaj2galaxy.io import warn
 
 

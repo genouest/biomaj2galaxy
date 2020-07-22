@@ -1,5 +1,6 @@
 from biomaj2galaxy import __version__
 from biomaj2galaxy import pass_context
+
 import click
 
 from .commands.add import add as func0
@@ -7,7 +8,6 @@ from .commands.add_lib import add_lib as func2
 from .commands.init import init as func4
 from .commands.rm import rm as func1
 from .commands.rm_lib import rm_lib as func3
-
 from .config import get_instance, global_config_path, set_global_config_path
 
 

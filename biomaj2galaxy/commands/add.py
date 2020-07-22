@@ -5,6 +5,7 @@ import uuid
 from biomaj2galaxy import pass_context
 from biomaj2galaxy.io import warn
 from biomaj2galaxy.utils import check_input, get_dbkey_entry, wait_completion
+
 import click
 
 
@@ -73,7 +74,7 @@ import click
 )
 @pass_context
 def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, fasta_sorting_method, fasta_custom_sort_list, fasta_custom_sort_handling, no_file_check, star_with_gtf, star_version, no_biomaj_env):
-    """Add data to a Galaxy data table. FILES is a list of path respecting this syntax: data_table_name:/path/to/data:Data name (e.g. "bowtie2:/db/some/where/my_genome:My supercool genome"). You can escape ':' by writing '\:'"""
+    """Add data to a Galaxy data table. FILES is a list of path respecting this syntax: data_table_name:/path/to/data:Data name (e.g. "bowtie2:/db/some/where/my_genome:My supercool genome"). You can escape ':' by writing '\\:'"""
 
     ADD_FASTA_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.4'
     DM_MANUAL_TOOL_ID = 'toolshed.g2.bx.psu.edu/repos/iuc/data_manager_manual/data_manager_manual/0.0.2'
@@ -102,7 +103,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
 
     files_info = []
     for f in files:
-        f = f.replace("\:", '___colon___')
+        f = f.replace("\\:", '___colon___')
         f_info = f.split(':')
         f_info = [x.replace('___colon___', ':') for x in f_info]
 

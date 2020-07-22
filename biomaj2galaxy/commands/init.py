@@ -6,8 +6,10 @@ from __future__ import print_function
 import os
 
 from bioblend import galaxy
+
 from biomaj2galaxy import config, pass_context
 from biomaj2galaxy.io import info, warn
+
 import click
 
 
