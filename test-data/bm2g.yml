@@ -2,4 +2,4 @@ __default: local
 
 local:
     url: "http://localhost:8080/"
-    apikey: "admin"
+    apikey: "fakekey"
