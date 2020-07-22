@@ -28,6 +28,8 @@ jobs:
         - "docker exec -i $GAL_DOCKER supervisorctl restart galaxy:"
       script:
         - python setup.py nosetests
+        - echo "Printing galaxy logs, just in case..."
+        - "docker logs $GAL_DOCKER"
     - stage: test
       python: '3.7'
       install:
@@ -42,6 +44,8 @@ jobs:
         - "docker exec -i $GAL_DOCKER supervisorctl restart galaxy:"
       script:
         - python setup.py nosetests
+        - echo "Printing galaxy logs, just in case..."
+        - "docker logs $GAL_DOCKER"
     - stage: deploy
       install: skip
       script: echo "Deploying to Pypi"
