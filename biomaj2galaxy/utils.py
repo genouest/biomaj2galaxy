@@ -168,7 +168,7 @@ def get_dbkey_entry(gi, dbkey):
             return k
 
 
-def wait_completion(gi, job_id, sleep_time=30, exit_on_error=True):
+def wait_completion(gi, dataset_id, job_id, sleep_time=30, exit_on_error=True):
     error_number = 0
     sleep_time = 10  # Don't wait too much for first try
 
@@ -176,7 +176,7 @@ def wait_completion(gi, job_id, sleep_time=30, exit_on_error=True):
     while True:
         # What's the status of the running job?
         try:
-            dataset_info = gi.datasets.show_dataset(job_id)
+            dataset_info = gi.datasets.show_dataset(dataset_id)
         except ConnectionError:
             error_number += 1
             warn("Could not connect to the Galaxy server, waiting %s seconds before retrying..." % (sleep_time * error_number))
@@ -193,9 +193,9 @@ def wait_completion(gi, job_id, sleep_time=30, exit_on_error=True):
         time.sleep(sleep_time)
         sleep_time = 30
 
-    dataset_info = gi.datasets.show_dataset(job_id)
+    dataset_info = gi.datasets.show_dataset(dataset_id)
     status = dataset_info['state']
-    if exit_on_error and status == 'error':
+    if exit_on_error and status == 'error' and job_id is not None:
         details = gi.jobs.show_job(job_id, full_details=True)
         print("STDOUT content:")
         print(details['stdout'])
