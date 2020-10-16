@@ -255,7 +255,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
     fetch_res = ctx.gi.tools.run_tool(None, DM_MANUAL_TOOL_ID, manual_dm_params)
     datasetid = fetch_res['outputs'][0]['id']
     jobid = None
-    if 'jobs' in fetch_res :
+    if 'jobs' in fetch_res:
         jobid = fetch_res['jobs'][0]['id']
     wait_completion(ctx.gi, datasetid, jobid)
 
