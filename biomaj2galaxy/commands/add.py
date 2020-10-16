@@ -203,8 +203,8 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         fetch_res = ctx.gi.tools.run_tool(None, ADD_FASTA_TOOL_ID, params)
         datasetid = fetch_res['outputs'][0]['id']
         jobid = None
-        if 'jobs' in fetch_res :
-          jobid=fetch_res['jobs'][0]['id']
+        if 'jobs' in fetch_res:
+            jobid = fetch_res['jobs'][0]['id']
         wait_completion(ctx.gi, datasetid, jobid)
 
     elif create_dbkey:  # Create the dbkey without ref genome (no len computing)
@@ -253,10 +253,10 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         index_entry += 1
 
     fetch_res = ctx.gi.tools.run_tool(None, DM_MANUAL_TOOL_ID, manual_dm_params)
-    datasetid=fetch_res['outputs'][0]['id']
-    jobid=None
+    datasetid = fetch_res['outputs'][0]['id']
+    jobid = None
     if 'jobs' in fetch_res :
-      jobid=fetch_res['jobs'][0]['id']
+        jobid = fetch_res['jobs'][0]['id']
     wait_completion(ctx.gi, datasetid, jobid)
 
     # Reload all tables just in case
