@@ -98,7 +98,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         'bwa': 'bwa_indexes',
         'bwa_mem': 'bwa_mem_indexes',
         'tophat2': 'tophat2_indexes',
-        'star': 'rnastar_index2_versioned',
+        'star': 'rnastar_index2x_versioned',
     }
 
     files_info = []
