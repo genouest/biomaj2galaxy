@@ -120,7 +120,7 @@ class DmTest(unittest.TestCase):
         twobit = twobit['fields']
         assert [new_dbkey, '/foo/really/foo/bar'] in twobit
 
-        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
+        star = self.gi.tool_data.show_data_table('rnastar_index2x_versioned')
         star = star['fields']
         assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '0', '0'] in star
 
@@ -136,7 +136,7 @@ class DmTest(unittest.TestCase):
         runner = CliRunner()
         runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', 'star:/foo/bloup/test/faa/bor:Wixxxtoo!', '--star-with-gtf'], catch_exceptions=False)
 
-        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
+        star = self.gi.tool_data.show_data_table('rnastar_index2x_versioned')
         star = star['fields']
         assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '1', '0'] in star
 
@@ -148,7 +148,7 @@ class DmTest(unittest.TestCase):
         runner = CliRunner()
         runner.invoke(biomaj2galaxy, ['add', '--dbkey', new_dbkey, '--dbkey-display-name', new_dbkey_name, '--no-file-check', 'star:/foo/bloup/test/faa/bor:Wixxxtoo!', '--star-with-gtf', '--star-version', '1.7.6'], catch_exceptions=False)
 
-        star = self.gi.tool_data.show_data_table('rnastar_index2_versioned')
+        star = self.gi.tool_data.show_data_table('rnastar_index2x_versioned')
         star = star['fields']
         assert [new_dbkey, new_dbkey, 'Wixxxtoo!', '/foo/bloup/test/faa/bor', '1', '1.7.6'] in star
 
@@ -295,7 +295,7 @@ class DmTest(unittest.TestCase):
             'blastdb',
             'twobit',
             '__dbkeys__',
-            'rnastar_index2_versioned',
+            'rnastar_index2x_versioned',
             'bwa_indexes',
             'all_fasta'
         ]
@@ -315,7 +315,7 @@ class DmTest(unittest.TestCase):
             'blastdb',
             'twobit',
             '__dbkeys__',
-            'rnastar_index2_versioned',
+            'rnastar_index2x_versioned',
             'bwa_indexes',
             'all_fasta'
         ]

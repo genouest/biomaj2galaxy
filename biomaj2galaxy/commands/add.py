@@ -98,7 +98,7 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         'bwa': 'bwa_indexes',
         'bwa_mem': 'bwa_mem_indexes',
         'tophat2': 'tophat2_indexes',
-        'star': 'rnastar_index2_versioned',
+        'star': 'rnastar_index2x_versioned',
     }
 
     files_info = []
@@ -201,7 +201,11 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
                 params['sorting|sequence_identifiers_' + n + '|identifier'] = i
                 n += 1
         fetch_res = ctx.gi.tools.run_tool(None, ADD_FASTA_TOOL_ID, params)
-        wait_completion(ctx.gi, fetch_res['outputs'][0]['id'])
+        datasetid = fetch_res['outputs'][0]['id']
+        jobid = None
+        if 'jobs' in fetch_res:
+            jobid = fetch_res['jobs'][0]['id']
+        wait_completion(ctx.gi, datasetid, jobid)
 
     elif create_dbkey:  # Create the dbkey without ref genome (no len computing)
         print("Will create the dbkey '" + dbkey + "'")
@@ -249,7 +253,11 @@ def add(ctx, files, dbkey, dbkey_display_name, genome_fasta, genome_fasta_name, 
         index_entry += 1
 
     fetch_res = ctx.gi.tools.run_tool(None, DM_MANUAL_TOOL_ID, manual_dm_params)
-    wait_completion(ctx.gi, fetch_res['outputs'][0]['id'])
+    datasetid = fetch_res['outputs'][0]['id']
+    jobid = None
+    if 'jobs' in fetch_res:
+        jobid = fetch_res['jobs'][0]['id']
+    wait_completion(ctx.gi, datasetid, jobid)
 
     # Reload all tables just in case
     time.sleep(1)  # Reloading too soon might not work for some strange reason
