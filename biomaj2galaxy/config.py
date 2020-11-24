@@ -1,7 +1,11 @@
 from __future__ import absolute_import
+
 import os
+
 from bioblend import galaxy
+
 import yaml
+
 
 DEFAULT_CONFIG = {
 }
