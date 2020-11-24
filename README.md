@@ -1,6 +1,6 @@
 # BioMAJ2Galaxy
 
-[![Build](https://travis-ci.org/genouest/biomaj2galaxy.svg?branch=master)](https://travis-ci.org/genouest/biomaj2galaxy)
+[![Lint and test](https://github.com/genouest/biomaj2galaxy/workflows/Lint%20and%20test/badge.svg)](https://github.com/genouest/biomaj2galaxy/actions)
 
 ## About
 
