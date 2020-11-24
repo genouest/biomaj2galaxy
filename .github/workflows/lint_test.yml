@@ -36,8 +36,12 @@ jobs:
         sleep 180 # Wait for the container to be ready
         docker exec -i $GAL_DOCKER install-tools /data/tools.yml
         docker exec -i $GAL_DOCKER supervisorctl restart galaxy:
+        echo "-------------"
+        echo "Now running tests, which are expected to fail, don't worry..."
+        echo "-------------"
         python setup.py nosetests || true # it will probably fail the first time, who cares?
         docker exec -i $GAL_DOCKER supervisorctl restart galaxy:
     - name: Run tests
       run: |
+        export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
         python setup.py nosetests
