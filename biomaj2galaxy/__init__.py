@@ -13,7 +13,7 @@ from .config import read_global_config
 
 standard_library.install_aliases()
 
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix='BM2G', help_option_names=['-h', '--help'])

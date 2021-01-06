@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="biomaj2galaxy",
-    version='2.1.0',
+    version='2.2.0',
     description="Command-line utility to assist in interconnecting BioMAJ (https://biomaj.genouest.org/) with Galaxy (http://galaxyproject.org/).",
     author="Anthony Bretaudeau",
     author_email="anthony.bretaudeau@inra.fr",
@@ -22,9 +22,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ])
