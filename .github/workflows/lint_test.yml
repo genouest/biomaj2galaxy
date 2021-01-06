@@ -49,15 +49,12 @@ jobs:
   pypi:
     runs-on: ubuntu-latest
     name: Deploy release to Pypi
-    strategy:
-      matrix:
-        python-version: 3.7
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.7
     - name: Python install
       run: pip install -U pip setuptools nose build
     - name: Build a binary wheel and a source tarball
