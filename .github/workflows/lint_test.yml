@@ -32,7 +32,7 @@ jobs:
     - name: Launch containers
       run: |
         export BM2G_GLOBAL_CONFIG_PATH=`pwd`/test-data/bm2g.yml
-        GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:20.05)
+        GAL_DOCKER=$(docker run -d -p 8080:80 -e GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True -v `pwd`/test-data/:/data/ quay.io/bgruening/galaxy:20.09)
         galaxy-wait -g http://localhost:8080 --timeout 300
         docker exec -i $GAL_DOCKER install-tools /data/tools.yml
         docker exec -i $GAL_DOCKER supervisorctl restart galaxy:
@@ -48,6 +48,7 @@ jobs:
 
   pypi:
     runs-on: ubuntu-latest
+    needs: [lint, py_test]
     name: Deploy release to Pypi
     steps:
     - name: Checkout
