@@ -31,8 +31,8 @@ def read_global_config():
     if not os.path.exists(config_path):
         return DEFAULT_CONFIG
 
-    with open(config_path) as f:
-        return yaml.load(f)
+    with open(config_path) as f:        
+        return yaml.safe_load(f)
 
 
 def _get_instance(instance_name=None):
